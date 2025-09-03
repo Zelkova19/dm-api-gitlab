@@ -22,7 +22,7 @@ allure:
     stage: reports
     tags: 
         - my_docker
-    image: frankescobar/allure-socker-service
+    image: frankescobar/allure-docker-service
     script: 
         - allure generate -c ./allure-results -o ./allure-report
     artifacts:
