@@ -28,7 +28,7 @@ allure:
     artifacts:
         paths:
             - ./allure-results
-            - ./allure-reports
+            - ./allure-report
         expire_in: 1 day
     rules:
         - when: always
