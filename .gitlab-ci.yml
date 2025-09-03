@@ -5,7 +5,7 @@ stages:
 run_tests:
     stage: testing
     tags:
-    - my_docker
+        - my_docker
     image: python:3.10-slim
     before_script:
         - pip install --upgrade pip
@@ -35,6 +35,8 @@ allure:
 
 pages:
     stage: reports
+    tags:
+        - my_docker
     needs: ["allure"]
     script:
         - mkdir public
