@@ -38,7 +38,7 @@ pages:
     needs: ["allure"]
     script:
         - mkdir public
-        - mv ./allure-reports/* public
+        - mv ./allure-report/* public
     artifacts: 
         paths:
             - public
