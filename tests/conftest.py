@@ -39,7 +39,7 @@ def setup_swagger_coverage():
     reporter.setup("/swagger/Account/swagger.json")
     yield
     reporter.generate_report()
-    reporter.cleanup_input_files()
+    # reporter.cleanup_input_files()
     send_file()
 
 @pytest.fixture(scope="session", autouse=True)
@@ -56,7 +56,7 @@ def set_config(
     os.environ["TELEGRAM_BOT_CHAT_ID"] = v.get("telegram.chat_id")
     os.environ["TELEGRAM_BOT_ACCESS_TOKEN"] = v.get("telegram.token")
     request.config.stash["telegram-notifier-addfields"]["enviroment"] = config_name
-    request.config.stash["telegram-notifier-addfields"]["report"] = "https://zelkova19.github.io/dm_api_tests/"
+    request.config.stash["telegram-notifier-addfields"]["report"] = "https://dm-api-tests-52e7fb.gitlab.io"
 
 
 def pytest_addoption(
