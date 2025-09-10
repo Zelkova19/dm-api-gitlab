@@ -11,7 +11,7 @@ run_tests:
     before_script:
         - pip install --upgrade pip
         - pip install poetry
-        - pip install --no-root
+        - poetry install --no-root
     script:
         - poetry run pytest --alluredir=./allure-results tests
     allow_failure: true
