@@ -1,4 +1,5 @@
 import os
+import platform
 from collections import namedtuple
 from pathlib import Path
 
@@ -33,19 +34,20 @@ options = (
     'telegram.token'
 )
 
+
 @pytest.fixture(scope="session", autouse=True)
 def setup_swagger_coverage():
     reporter = CoverageReporter(api_name="dm-api-account", host="http://5.63.153.31:5051")
     reporter.setup("/swagger/Account/swagger.json")
     yield
-    reporter.generate_report()
-    # reporter.cleanup_input_files()
-    send_file()
+    if platform.system() != "Linux":
+        reporter.generate_report()
+        send_file()
 
 @pytest.fixture(scope="session", autouse=True)
 def set_config(
         request
-        ):
+):
     config = Path(__file__).joinpath("../../").joinpath("config")
     config_name = request.config.getoption("--env")
     v.set_config_name(config_name)
@@ -61,7 +63,7 @@ def set_config(
 
 def pytest_addoption(
         parser
-        ):
+):
     parser.addoption("--env", action="store", default="stg", help="run stg")
 
     for option in options:

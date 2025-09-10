@@ -7,6 +7,8 @@ __pycache__/
 *.so
 
 # Distribution / packaging
+swagger-coverage-output/
+tests/swagger-coverage-output/
 .idea
 .Python
 build/
