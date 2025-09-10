@@ -10,9 +10,10 @@ run_tests:
     image: python:3.10-slim
     before_script:
         - pip install --upgrade pip
-        - pip install -r requirements.txt
+        - pip install poetry
+        - pip install --no-root
     script:
-        - pytest --alluredir=./allure-results tests
+        - poetry run pytest --alluredir=./allure-results tests
     allow_failure: true
     artifacts:
         when: always

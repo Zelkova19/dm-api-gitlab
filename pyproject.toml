@@ -1,0 +1,32 @@
+[project]
+name = "dm-api-tests-gitlab"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "zelkova",email = "cohiba666@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "requests (>=2.32.5,<3.0.0)",
+    "pytest (>=8.4.2,<9.0.0)",
+    "allure-pytest (>=2.15.0,<3.0.0)",
+    "faker (>=37.6.0,<38.0.0)",
+    "pydantic (>=2.11.7,<3.0.0)",
+    "pyhamcrest (>=2.1.0,<3.0.0)",
+    "curlify (>=3.0.0,<4.0.0)",
+    "pytest-telegram-notifier (>=1.4.0,<2.0.0)",
+    "telebot (>=0.0.5,<0.0.6)",
+    "vyper-config (>=1.2.1,<2.0.0)",
+    "swagger-coverage @ https://github.com/Zelkova19/swagger-coverage-py/archive/refs/heads/master.zip",
+    "marshmallow (>=4.0.1,<5.0.0)",
+    "pyyaml (>=6.0.2,<7.0.0)",
+    "structlog (>=25.4.0,<26.0.0)",
+    "toml (>=0.10.2,<0.11.0)",
+    "watchdog (>=6.0.0,<7.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
