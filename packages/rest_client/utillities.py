@@ -1,12 +1,12 @@
 import json
 
 import allure
-import curlify
+import curlify2
 from structlog.stdlib import add_logger_name
 
 
 def allure_attach(fn):
-    def wrapper(*args,**kwargs):
+    async def wrapper(*args,**kwargs):
         body = kwargs.get("json")
         if body:
             allure.attach(
@@ -14,8 +14,8 @@ def allure_attach(fn):
                 name="request_body",
                 attachment_type=allure.attachment_type.JSON
             )
-        response = fn(*args, **kwargs)
-        curl = curlify.to_curl(response.request)
+        response = await fn(*args, **kwargs)
+        curl = curlify2.Curlify(response.request).to_curl()
         allure.attach(curl, name="curl", attachment_type=allure.attachment_type.TEXT)
         try:
             response_json = response.json()

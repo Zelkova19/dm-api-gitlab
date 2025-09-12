@@ -5,7 +5,7 @@ import allure
 class TestsPostV1AccountPassword:
 
     @allure.title("Проверка смены пароля")
-    def test_post_v1_account_password(
+    async def test_post_v1_account_password(
             self,
             account_helper,
             prepare_user
@@ -14,7 +14,7 @@ class TestsPostV1AccountPassword:
         password = prepare_user.password
         email = prepare_user.email
         new_password = "011235813"
-        account_helper.register_new_user(login=login, password=password, email=email)
-        account_helper.user_login(login=login, password=password)
-        account_helper.change_password(login=login, email=email, password=password, new_password=new_password)
-        account_helper.user_login(login=login, password=new_password)
+        await account_helper.register_new_user(login=login, password=password, email=email)
+        await account_helper.user_login(login=login, password=password)
+        await account_helper.change_password(login=login, email=email, password=password, new_password=new_password)
+        await account_helper.user_login(login=login, password=new_password)

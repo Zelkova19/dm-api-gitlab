@@ -8,7 +8,7 @@ from packages.rest_client.client import RestClient
 class LoginApi(RestClient):
 
     @allure.step("Аутентификация пользователя с кредами")
-    def post_v1_account_login(
+    async def post_v1_account_login(
             self,
             login_credentials: LoginCredentials,
             validate_response=True
@@ -18,7 +18,7 @@ class LoginApi(RestClient):
         :param:
         :return:
         """
-        response = self.post(
+        response = await self.post(
             path=f'/v1/account/login',
             json=login_credentials.model_dump(exclude_none=True, by_alias=True)
         )
@@ -27,7 +27,7 @@ class LoginApi(RestClient):
         return response
 
     @allure.step("Выход из аккаунта")
-    def delete_v1_account_login(
+    async def delete_v1_account_login(
             self,
             **kwargs
     ):
@@ -36,14 +36,14 @@ class LoginApi(RestClient):
         :param :
         :return:
         """
-        response = self.delete(
+        response = await self.delete(
             path=f'/v1/account/login',
             **kwargs
         )
         return response
 
     @allure.step("Выход мз всех устройств")
-    def delete_v1_account_login_all(
+    async def delete_v1_account_login_all(
             self,
             **kwargs
     ):
@@ -52,7 +52,7 @@ class LoginApi(RestClient):
         :param :
         :return:
         """
-        response = self.delete(
+        response = await self.delete(
             path=f'/v1/account/login/all',
             **kwargs
         )

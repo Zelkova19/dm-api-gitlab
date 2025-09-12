@@ -9,7 +9,7 @@ from packages.rest_client.client import RestClient
 class AccountApi(RestClient):
 
     @allure.step("Регистрация нового пользователя")
-    def post_v1_account(
+    async def post_v1_account(
             self,
             registration: Registration
     ):
@@ -18,14 +18,14 @@ class AccountApi(RestClient):
         :param:
         :return:
         """
-        response = self.post(
+        response = await self.post(
             path=f'/v1/account',
             json=registration.model_dump(exclude_none=True, by_alias=True)
         )
         return response
 
     @allure.step("Запрос пользователя")
-    def get_v1_account(
+    async def get_v1_account(
             self,
             validate_response=True,
             **kwargs
@@ -34,7 +34,7 @@ class AccountApi(RestClient):
         Get current user
         :return:
         """
-        response = self.get(
+        response = await self.get(
             path=f'/v1/account',
             **kwargs
         )
@@ -43,7 +43,7 @@ class AccountApi(RestClient):
         return response
 
     @allure.step("Сброс пароля")
-    def post_v1_account_password(
+    async def post_v1_account_password(
             self,
             **kwargs
     ):
@@ -51,7 +51,7 @@ class AccountApi(RestClient):
         Reset registered user password
         :return:
         """
-        response = self.post(
+        response = await self.post(
             path=f'/v1/account/password',
             **kwargs
         )
@@ -59,7 +59,7 @@ class AccountApi(RestClient):
         return response
 
     @allure.step("Изменения пароля")
-    def put_v1_account_password(
+    async def put_v1_account_password(
             self,
             **kwargs
 
@@ -68,14 +68,14 @@ class AccountApi(RestClient):
         Change registered user password
         :return:
         """
-        response = self.put(
+        response = await self.put(
             path=f'/v1/account/password',
             **kwargs
         )
         return UserEnvelop(**response.json())
 
     @allure.step("Активация пользователя")
-    def put_v1_account_token(
+    async def put_v1_account_token(
             self,
             user_token,
             validate_response=True
@@ -89,7 +89,7 @@ class AccountApi(RestClient):
         headers = {
             'accept': 'test/plain'
         }
-        response = self.put(
+        response = await self.put(
             path=f'/v1/account/{user_token}',
             headers=headers
         )
@@ -98,7 +98,7 @@ class AccountApi(RestClient):
         return response
 
     @allure.step("Смена почты")
-    def put_v1_account_email(
+    async def put_v1_account_email(
             self,
             json_data,
             validate_response=True
@@ -109,7 +109,7 @@ class AccountApi(RestClient):
         :param json_data:
         :return:
         """
-        response = self.put(
+        response = await self.put(
             path=f'/v1/account/email',
             json=json_data
         )
