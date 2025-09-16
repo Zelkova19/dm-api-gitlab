@@ -14,24 +14,24 @@ from tests.functional import *
 
 import structlog
 
-from packages.rest_client.configuration import Configuration as MailhogConfiguration
-from packages.rest_client.configuration import Configuration as DmApiConfiguration
+from packages.rest_client.configuration import (
+    Configuration as MailhogConfiguration,
+)
+from packages.rest_client.configuration import (
+    Configuration as DmApiConfiguration,
+)
 from services.dm_api_account import DMApiAccount
 from services.api_mailhog import MailHogApi
 
-structlog.configure(
-    processors=[
-        structlog.processors.JSONRenderer(indent=4, ensure_ascii=True)
-    ]
-)
+structlog.configure(processors=[structlog.processors.JSONRenderer(indent=4, ensure_ascii=True)])
 
 options = (
-    'service.dm_api_account',
-    'service.mailhog',
-    'user.login',
-    'user.password',
-    'telegram.chat_id',
-    'telegram.token'
+    "service.dm_api_account",
+    "service.mailhog",
+    "user.login",
+    "user.password",
+    "telegram.chat_id",
+    "telegram.token",
 )
 
 
@@ -44,10 +44,9 @@ def setup_swagger_coverage():
         reporter.generate_report()
         send_file()
 
+
 @pytest.fixture(scope="session", autouse=True)
-def set_config(
-        request
-):
+def set_config(request):
     config = Path(__file__).joinpath("../../").joinpath("config")
     config_name = request.config.getoption("--env")
     v.set_config_name(config_name)
@@ -61,9 +60,7 @@ def set_config(
     request.config.stash["telegram-notifier-addfields"]["report"] = "https://dm-api-tests-52e7fb.gitlab.io"
 
 
-def pytest_addoption(
-        parser
-):
+def pytest_addoption(parser):
     parser.addoption("--env", action="store", default="stg", help="run stg")
 
     for option in options:
@@ -72,49 +69,44 @@ def pytest_addoption(
 
 @pytest.fixture
 def mailhog_api():
-    mailhog_configuration = MailhogConfiguration(host=v.get('service.mailhog'))
+    mailhog_configuration = MailhogConfiguration(host=v.get("service.mailhog"))
     mailhog_client = MailHogApi(configuration=mailhog_configuration)
     return mailhog_client
 
 
 @pytest.fixture
 def account_api():
-    dm_api_configuration = DmApiConfiguration(host=v.get('service.dm_api_account'), disable_log=False)
+    dm_api_configuration = DmApiConfiguration(host=v.get("service.dm_api_account"), disable_log=False)
     account = DMApiAccount(configuration=dm_api_configuration)
     return account
 
 
 @pytest.fixture
-def account_helper(
-        mailhog_api,
-        account_api
-):
+def account_helper(mailhog_api, account_api):
     account_helper = AccountHelper(dm_account_api=account_api, mailhog=mailhog_api)
     return account_helper
 
 
 @pytest.fixture
-async def auth_account_helper(
-        mailhog_api,
-        prepare_user
-):
-    dm_api_configuration = DmApiConfiguration(host=v.get('service.dm_api_account'), disable_log=False)
+async def auth_account_helper(mailhog_api, prepare_user):
+    dm_api_configuration = DmApiConfiguration(host=v.get("service.dm_api_account"), disable_log=False)
     account = DMApiAccount(configuration=dm_api_configuration)
     account_helper = AccountHelper(dm_account_api=account, mailhog=mailhog_api)
-    await account_helper.register_new_user(login=prepare_user.login, password=prepare_user.password, email=prepare_user.email)
-    await account_helper.auth_client(
+    await account_helper.register_new_user(
         login=prepare_user.login,
-        password=prepare_user.password
+        password=prepare_user.password,
+        email=prepare_user.email,
     )
+    await account_helper.auth_client(login=prepare_user.login, password=prepare_user.password)
     return account_helper
 
 
 @pytest.fixture
 def prepare_user():
     faker = Faker()
-    login = faker.name().replace(' ', '') + 'Roman'
+    login = faker.name().replace(" ", "") + "Roman"
     password = faker.password()
-    email = f'{login}@mail.ru'
-    User = namedtuple('User', ['login', 'password', 'email'])
+    email = f"{login}@mail.ru"
+    User = namedtuple("User", ["login", "password", "email"])
     user = User(login=login, password=password, email=email)
     return user

@@ -6,13 +6,13 @@ from structlog.stdlib import add_logger_name
 
 
 def allure_attach(fn):
-    async def wrapper(*args,**kwargs):
+    async def wrapper(*args, **kwargs):
         body = kwargs.get("json")
         if body:
             allure.attach(
                 json.dumps(body, indent=4),
                 name="request_body",
-                attachment_type=allure.attachment_type.JSON
+                attachment_type=allure.attachment_type.JSON,
             )
         response = await fn(*args, **kwargs)
         curl = curlify2.Curlify(response.request).to_curl()
@@ -25,13 +25,13 @@ def allure_attach(fn):
             allure.attach(
                 response_text if len(response_text) > 0 else status_code,
                 name="request_body",
-                attachment_type=allure.attachment_type.TEXT
+                attachment_type=allure.attachment_type.TEXT,
             )
         else:
             allure.attach(
                 json.dumps(response_json, indent=4),
                 name="request_body",
-                attachment_type=allure.attachment_type.JSON
+                attachment_type=allure.attachment_type.JSON,
             )
         return response
 
