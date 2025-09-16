@@ -51,8 +51,8 @@ class AccountHelper:
         )
         assert response.status_code == 200, f"Пришло {response.status_code}, {response.json()}"
 
-        token = self.get_token(login=login, token_type="reset")
-        self.dm_account_api.account_api.put_v1_account_password(
+        token = await self.get_token(login=login, token_type="reset")
+        await self.dm_account_api.account_api.put_v1_account_password(
             json={
                 "login": login,
                 "oldPassword": password,
