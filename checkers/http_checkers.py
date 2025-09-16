@@ -2,7 +2,8 @@ from contextlib import contextmanager
 
 import allure
 import requests
-from requests.exceptions import HTTPError
+import httpx
+# from requests.exceptions import HTTPError
 
 
 @contextmanager
@@ -17,6 +18,6 @@ def check_status_code_http(
                 raise AssertionError(f'Ожидаемый статус код должен быть равен {expected_status_code}')
             if expected_message:
                 raise AssertionError(f'Должно быть получено сообщение "{expected_message}", но запрос прошел успешно')
-        except HTTPError as e:
+        except httpx.HTTPStatusError as e:
             assert e.response.status_code == expected_status_code
             assert e.response.json()['title'] == expected_message

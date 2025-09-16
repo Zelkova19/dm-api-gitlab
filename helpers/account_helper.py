@@ -12,14 +12,14 @@ from services.api_mailhog import MailHogApi
 def retrier(
         function
 ):
-    def wrapper(
+    async def wrapper(
             *args,
             **kwargs
     ):
         token = None
         count = 0
         while token is None:
-            token = function(*args, **kwargs)
+            token = await function(*args, **kwargs)
             count += 1
             print(f'Попыток получить токен = {count}!')
             if count == 5:
@@ -42,27 +42,27 @@ class AccountHelper:
         self.mailhog = mailhog
 
     @allure.step("Авторизация пользователя")
-    def auth_client(
+    async def auth_client(
             self,
             login: str,
             password: str
     ):
-        response = self.user_login(login=login, password=password)
+        response = await self.user_login(login=login, password=password)
         token = {'x-dm-auth-token': response.headers['x-dm-auth-token']}
 
         self.dm_account_api.account_api.set_headers(token)
         self.dm_account_api.login_api.set_headers(token)
 
     @allure.step("Смена пароля")
-    def change_password(
+    async def change_password(
             self,
             login: str,
             email: str,
             password: str,
             new_password: str
     ):
-        user = self.user_login(login=login, password=password)
-        response = self.dm_account_api.account_api.post_v1_account_password(
+        user = await self.user_login(login=login, password=password)
+        response = await self.dm_account_api.account_api.post_v1_account_password(
             json={
                 'login': login,
                 'email': email
@@ -88,7 +88,7 @@ class AccountHelper:
         assert response.status_code == 200, f'Пришло {response.status_code}, {response.json()}'
 
     @allure.step('Регистрация нового пользователя')
-    def register_new_user(
+    async def register_new_user(
             self,
             login: str,
             password: str,
@@ -101,17 +101,17 @@ class AccountHelper:
             email=email
         )
 
-        self.dm_account_api.account_api.post_v1_account(registration=registration)
+        await self.dm_account_api.account_api.post_v1_account(registration=registration)
         start_time = time.time()
-        token = self.get_token(login=login)
+        token = await self.get_token(login=login)
         end_time = time.time()
         assert end_time - start_time < 3, f'Время получения токена превысило 3 секунды. Время выполнения {end_time - start_time}'
         assert token is not None, 'Ожидали токен, получили None'
-        response = self.dm_account_api.account_api.put_v1_account_token(user_token=token)
+        response = await self.dm_account_api.account_api.put_v1_account_token(user_token=token)
         return response
 
     @allure.step('Аутентификация пользователя')
-    def user_login(
+    async def user_login(
             self,
             login: str,
             password: str,
@@ -126,7 +126,7 @@ class AccountHelper:
             remember_me=remember_me
         )
 
-        response = self.dm_account_api.login_api.post_v1_account_login(
+        response = await self.dm_account_api.login_api.post_v1_account_login(
             login_credentials=login_credentials,
             validate_response=validate_response
         )
@@ -135,7 +135,7 @@ class AccountHelper:
         return response
 
     @allure.step("Смена почты")
-    def change_email(
+    async def change_email(
             self,
             login: str,
             password: str,
@@ -147,7 +147,7 @@ class AccountHelper:
             'password': password,
             'email': new_email
         }
-        self.dm_account_api.account_api.put_v1_account_email(json_data=json_data)
+        await self.dm_account_api.account_api.put_v1_account_email(json_data=json_data)
 
         json_data = {
             'login': login,
@@ -155,19 +155,19 @@ class AccountHelper:
             'remember_me': remember_me
         }
 
-        token = self.get_token(login=login)
+        token = await self.get_token(login=login)
         assert token is not None, 'Ожидали токен, получили None'
-        response = self.dm_account_api.account_api.put_v1_account_token(user_token=token)
+        response = await self.dm_account_api.account_api.put_v1_account_token(user_token=token)
         return response
 
     @retrier
-    def get_token(
+    async def get_token(
             self,
             login,
             token_type='activation'
     ):
         token = None
-        response = self.mailhog.mailhog_api.get_api_v2_messages()
+        response = await self.mailhog.mailhog_api.get_api_v2_messages()
         for item in response.json()['items']:
             try:
                 user_data = loads(item['Content']['Body'])

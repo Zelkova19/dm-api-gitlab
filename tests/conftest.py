@@ -94,15 +94,15 @@ def account_helper(
 
 
 @pytest.fixture
-def auth_account_helper(
+async def auth_account_helper(
         mailhog_api,
         prepare_user
 ):
     dm_api_configuration = DmApiConfiguration(host=v.get('service.dm_api_account'), disable_log=False)
     account = DMApiAccount(configuration=dm_api_configuration)
     account_helper = AccountHelper(dm_account_api=account, mailhog=mailhog_api)
-    account_helper.register_new_user(login=prepare_user.login, password=prepare_user.password, email=prepare_user.email)
-    account_helper.auth_client(
+    await account_helper.register_new_user(login=prepare_user.login, password=prepare_user.password, email=prepare_user.email)
+    await account_helper.auth_client(
         login=prepare_user.login,
         password=prepare_user.password
     )

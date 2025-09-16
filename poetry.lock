@@ -45,6 +45,27 @@ files = [
 ]
 
 [[package]]
+name = "anyio"
+version = "4.10.0"
+description = "High-level concurrency and networking framework on top of asyncio or Trio"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "anyio-4.10.0-py3-none-any.whl", hash = "sha256:60e474ac86736bbfd6f210f7a61218939c318f43f9972497381f1c5e930ed3d1"},
+    {file = "anyio-4.10.0.tar.gz", hash = "sha256:3f3fae35c96039744587aa5b8371e7e8e603c0702999535961dd336026973ba6"},
+]
+
+[package.dependencies]
+exceptiongroup = {version = ">=1.0.2", markers = "python_version < \"3.11\""}
+idna = ">=2.8"
+sniffio = ">=1.1"
+typing_extensions = {version = ">=4.5", markers = "python_version < \"3.13\""}
+
+[package.extras]
+trio = ["trio (>=0.26.1)"]
+
+[[package]]
 name = "attrs"
 version = "25.3.0"
 description = "Classes Without Boilerplate"
@@ -63,6 +84,19 @@ dev = ["cloudpickle ; platform_python_implementation == \"CPython\"", "hypothesi
 docs = ["cogapp", "furo", "myst-parser", "sphinx", "sphinx-notfound-page", "sphinxcontrib-towncrier", "towncrier"]
 tests = ["cloudpickle ; platform_python_implementation == \"CPython\"", "hypothesis", "mypy (>=1.11.1) ; platform_python_implementation == \"CPython\" and python_version >= \"3.10\"", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins ; platform_python_implementation == \"CPython\" and python_version >= \"3.10\"", "pytest-xdist[psutil]"]
 tests-mypy = ["mypy (>=1.11.1) ; platform_python_implementation == \"CPython\" and python_version >= \"3.10\"", "pytest-mypy-plugins ; platform_python_implementation == \"CPython\" and python_version >= \"3.10\""]
+
+[[package]]
+name = "backports-asyncio-runner"
+version = "1.2.0"
+description = "Backport of asyncio.Runner, a context manager that controls event loop life cycle."
+optional = false
+python-versions = "<3.11,>=3.8"
+groups = ["main"]
+markers = "python_version == \"3.10\""
+files = [
+    {file = "backports_asyncio_runner-1.2.0-py3-none-any.whl", hash = "sha256:0da0a936a8aeb554eccb426dc55af3ba63bcdc69fa1a600b5bb305413a4477b5"},
+    {file = "backports_asyncio_runner-1.2.0.tar.gz", hash = "sha256:a5aa7b2b7d8f8bfcaa2b57313f70792df84e32a2a746f585213373f900b42162"},
+]
 
 [[package]]
 name = "backports-datetime-fromisoformat"
@@ -237,19 +271,16 @@ files = [
 ]
 
 [[package]]
-name = "curlify"
-version = "3.0.0"
-description = "Convert Requests request objects to curl commands."
+name = "curlify2"
+version = "2.0.0"
+description = "Library to convert python requests and httpx object to curl command."
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.7,<4.0"
 groups = ["main"]
 files = [
-    {file = "curlify-3.0.0-py3-none-any.whl", hash = "sha256:52060c0eb7a656b7bde6b668c32f337bed4d736ce230755767e3ada56a09c338"},
-    {file = "curlify-3.0.0.tar.gz", hash = "sha256:7b488ff3c924dba3433a1cc74044c0942da21f0a97fa26c3138319ba640ca412"},
+    {file = "curlify2-2.0.0-py3-none-any.whl", hash = "sha256:23878b13fa33ed92ae5dff0476e5b881b39fc79a5fcb37e6726f96239a136474"},
+    {file = "curlify2-2.0.0.tar.gz", hash = "sha256:6c3a98dc8603b76da990f58754b18ec4e9bfe5b881fc52d33ddf9d9096568809"},
 ]
-
-[package.dependencies]
-requests = "*"
 
 [[package]]
 name = "distconfig3"
@@ -324,6 +355,65 @@ files = [
 
 [package.dependencies]
 tzdata = "*"
+
+[[package]]
+name = "h11"
+version = "0.16.0"
+description = "A pure-Python, bring-your-own-I/O implementation of HTTP/1.1"
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "h11-0.16.0-py3-none-any.whl", hash = "sha256:63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86"},
+    {file = "h11-0.16.0.tar.gz", hash = "sha256:4e35b956cf45792e4caa5885e69fba00bdbc6ffafbfa020300e549b208ee5ff1"},
+]
+
+[[package]]
+name = "httpcore"
+version = "1.0.9"
+description = "A minimal low-level HTTP client."
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "httpcore-1.0.9-py3-none-any.whl", hash = "sha256:2d400746a40668fc9dec9810239072b40b4484b640a8c38fd654a024c7a1bf55"},
+    {file = "httpcore-1.0.9.tar.gz", hash = "sha256:6e34463af53fd2ab5d807f399a9b45ea31c3dfa2276f15a2c3f00afff6e176e8"},
+]
+
+[package.dependencies]
+certifi = "*"
+h11 = ">=0.16"
+
+[package.extras]
+asyncio = ["anyio (>=4.0,<5.0)"]
+http2 = ["h2 (>=3,<5)"]
+socks = ["socksio (==1.*)"]
+trio = ["trio (>=0.22.0,<1.0)"]
+
+[[package]]
+name = "httpx"
+version = "0.28.1"
+description = "The next generation HTTP client."
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "httpx-0.28.1-py3-none-any.whl", hash = "sha256:d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad"},
+    {file = "httpx-0.28.1.tar.gz", hash = "sha256:75e98c5f16b0f35b567856f597f06ff2270a374470a5c2392242528e3e3e42fc"},
+]
+
+[package.dependencies]
+anyio = "*"
+certifi = "*"
+httpcore = "==1.*"
+idna = "*"
+
+[package.extras]
+brotli = ["brotli ; platform_python_implementation == \"CPython\"", "brotlicffi ; platform_python_implementation != \"CPython\""]
+cli = ["click (==8.*)", "pygments (==2.*)", "rich (>=10,<14)"]
+http2 = ["h2 (>=3,<5)"]
+socks = ["socksio (==1.*)"]
+zstd = ["zstandard (>=0.18.0)"]
 
 [[package]]
 name = "idna"
@@ -618,6 +708,26 @@ tomli = {version = ">=1", markers = "python_version < \"3.11\""}
 dev = ["argcomplete", "attrs (>=19.2)", "hypothesis (>=3.56)", "mock", "requests", "setuptools", "xmlschema"]
 
 [[package]]
+name = "pytest-asyncio"
+version = "1.1.0"
+description = "Pytest support for asyncio"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "pytest_asyncio-1.1.0-py3-none-any.whl", hash = "sha256:5fe2d69607b0bd75c656d1211f969cadba035030156745ee09e7d71740e58ecf"},
+    {file = "pytest_asyncio-1.1.0.tar.gz", hash = "sha256:796aa822981e01b68c12e4827b8697108f7205020f24b5793b3c41555dab68ea"},
+]
+
+[package.dependencies]
+backports-asyncio-runner = {version = ">=1.1,<2", markers = "python_version < \"3.11\""}
+pytest = ">=8.2,<9"
+
+[package.extras]
+docs = ["sphinx (>=5.3)", "sphinx-rtd-theme (>=1)"]
+testing = ["coverage (>=6.2)", "hypothesis (>=5.7.1)"]
+
+[[package]]
 name = "pytest-telegram-notifier"
 version = "1.4.0"
 description = "Telegram notification plugin for Pytest"
@@ -772,6 +882,18 @@ groups = ["main"]
 files = [
     {file = "six-1.17.0-py2.py3-none-any.whl", hash = "sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274"},
     {file = "six-1.17.0.tar.gz", hash = "sha256:ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81"},
+]
+
+[[package]]
+name = "sniffio"
+version = "1.3.1"
+description = "Sniff out which async library your code is running under"
+optional = false
+python-versions = ">=3.7"
+groups = ["main"]
+files = [
+    {file = "sniffio-1.3.1-py3-none-any.whl", hash = "sha256:2f6da418d1f1e0fddd844478f41680e794e6051915791a034ff65e5f100525a2"},
+    {file = "sniffio-1.3.1.tar.gz", hash = "sha256:f4324edc670a0f49750a81b895f35c3adb843cca46f0530f79fc1babb23789dc"},
 ]
 
 [[package]]
@@ -1004,5 +1126,5 @@ watchmedo = ["PyYAML (>=3.10)"]
 
 [metadata]
 lock-version = "2.1"
-python-versions = ">=3.10"
-content-hash = "a39d65087e6778080c76f81395a8f3d37db604a115f3588008aded16e02d312b"
+python-versions = ">=3.10,<4.0"
+content-hash = "30a79ad19de03ba1fb708d43f994cc45f2202a648b723ef1d2ad1c633322dbcd"
