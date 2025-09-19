@@ -40,3 +40,9 @@ addopts = """
         --telegram-notifier-config-file=telegram-notifier-config.ini
 """
 asyncio_mode = "auto"
+
+[tool.poetry.group.lint.dependencies]
+ruff = "^0.13.0"
+
+[tool.ruff]
+line-length = 120

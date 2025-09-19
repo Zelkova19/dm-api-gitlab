@@ -11,14 +11,10 @@ v.read_in_config()
 
 def send_file() -> None:
     telegram_bot = TeleBot(v.get("telegram.token"))
-    file_path = Path(__file__).parent.joinpath('../..').joinpath("swagger-coverage-report.html")
-    with open(file_path, 'rb') as document:
-        telegram_bot.send_document(
-            v.get("telegram.chat_id"),
-            document=document,
-            caption="coverage"
-        )
+    file_path = Path(__file__).parent.joinpath("../..").joinpath("swagger-coverage-report.html")
+    with open(file_path, "rb") as document:
+        telegram_bot.send_document(v.get("telegram.chat_id"), document=document, caption="coverage")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     send_file()
