@@ -20,28 +20,28 @@ class UserDetailsEnvelope(BaseModel):
 
 class UserDetails(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    login: str = Field(None, description="Login")
+    login: Optional[str] = Field(None, description="Login")
     roles: List[UserRole]
-    medium_picture_url: str = Field(None, alias="mediumPictureUrl")
-    small_picture_url: str = Field(None, alias="smallPictureUrl")
-    status: str = Field(None)
+    medium_picture_url: Optional[str] = Field(None, alias="mediumPictureUrl")
+    small_picture_url: Optional[str] = Field(None, alias="smallPictureUrl")
+    status: Optional[str] = Field(None)
     rating: Rating
-    online: datetime = Field(None)
-    name: str = Field(None)
-    location: str = Field(None)
-    registration: datetime = Field(None)
-    icq: str = Field(None)
-    skype: str = Field(None)
-    original_picture_url: str = Field(None, alias="originalPictureUrl")
-    info: Any = Field(None)
-    settings: UserSettings = None
+    online: Optional[datetime] = Field(None)
+    name: Optional[str] = Field(None)
+    location: Optional[str] = Field(None)
+    registration: Optional[datetime] = Field(None)
+    icq: Optional[str] = Field(None)
+    skype: Optional[str] = Field(None)
+    original_picture_url: Optional[str] = Field(None, alias="originalPictureUrl")
+    info: Optional[Any] = Field(None)
+    settings: Optional[UserSettings] = None
 
 
 class UserSettings(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    color_schema: ColorSchema = Field(None, alias="colorSchema")
-    nanny_greetings_message: str = Field(None, alias="nannyGreetingsMessage")
-    paging: PagingSettings = None
+    color_schema: Optional[ColorSchema] = Field(None, alias="colorSchema")
+    nanny_greetings_message: Optional[str] = Field(None, alias="nannyGreetingsMessage")
+    paging: Optional[PagingSettings] = None
 
 
 class ColorSchema(Enum):
@@ -54,8 +54,8 @@ class ColorSchema(Enum):
 
 class PagingSettings(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    posts_per_page: int = Field(None, alias="postsPerPage")
-    comments_per_page: int = Field(None, alias="commentsPerPage")
-    topics_per_page: int = Field(None, alias="topicsPerPage")
-    messages_per_page: int = Field(None, alias="messagesPerPage")
-    entities_per_page: int = Field(None, alias="entitiesPerPage")
+    posts_per_page: Optional[int] = Field(None, alias="postsPerPage")
+    comments_per_page: Optional[int] = Field(None, alias="commentsPerPage")
+    topics_per_page: Optional[int] = Field(None, alias="topicsPerPage")
+    messages_per_page: Optional[int] = Field(None, alias="messagesPerPage")
+    entities_per_page: Optional[int] = Field(None, alias="entitiesPerPage")

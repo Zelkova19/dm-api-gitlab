@@ -1,10 +1,13 @@
 import allure
 
+from tests.conftest import User
+from helpers.account_helper import AccountHelper
+
 
 @allure.suite("Проверка метода PUT V1/account.email")
 class TestPutV1AccountEmail:
     @allure.title("Проверка семны почты")
-    async def test_put_v1_account_email(self, account_helper, prepare_user):
+    async def test_put_v1_account_email(self, account_helper: AccountHelper, prepare_user: User) -> None:
         login = prepare_user.login
         password = prepare_user.password
         email = prepare_user.email

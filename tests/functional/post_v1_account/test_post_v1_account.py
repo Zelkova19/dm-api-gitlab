@@ -4,6 +4,8 @@ import pytest
 from faker import Faker
 from checkers.http_checkers import check_status_code_http
 from checkers.post_v1_account import PostV1Account
+from tests.conftest import User
+from helpers.account_helper import AccountHelper
 
 faker = Faker()
 
@@ -12,7 +14,7 @@ faker = Faker()
 class TestsPostV1Account:
     @allure.sub_suite("Позитивные тесты")
     @allure.title("Проверка регистрации новго пользователя")
-    async def test_post_v1_account(self, account_helper, prepare_user):
+    async def test_post_v1_account(self, account_helper: AccountHelper, prepare_user: User) -> None:
         login = prepare_user.login
         password = prepare_user.password
         email = prepare_user.email
@@ -52,15 +54,15 @@ class TestsPostV1Account:
     )
     async def test_post_v1_account_validation_filed(
         self,
-        account_helper,
-        prepare_user,
-        login,
-        email,
-        password,
-        error_message,
-        status_code,
-        title,
-    ):
+        account_helper: AccountHelper,
+        prepare_user: User,
+        login: str,
+        email: str,
+        password: str,
+        error_message: str,
+        status_code: int,
+        title: str,
+    ) -> None:
         allure.dynamic.title(f"Валидация поля {title}")
 
         with check_status_code_http(status_code, error_message):
