@@ -11,7 +11,7 @@ class TestsGetV1Account:
     @allure.title("Авторизованный запрос пользователя")
     async def test_get_v1_account_auth(self, auth_account_helper: AccountHelper) -> None:
         response = await auth_account_helper.dm_account_api.account_api.get_v1_account()
-        GetV1Account.get_v1_account(response=response, login_suffix="Roman") # type: ignore[arg-type]
+        GetV1Account.get_v1_account(response=response, login_suffix="Roman")  # type: ignore[arg-type]
 
     @allure.sub_suite("Негативные тесты")
     @allure.title("Неавторизованный запрос пользователя")

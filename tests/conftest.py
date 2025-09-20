@@ -1,6 +1,5 @@
 import os
 import platform
-from collections import namedtuple
 from pathlib import Path
 from typing import NamedTuple, Generator, Any
 
@@ -11,7 +10,6 @@ from vyper import v
 
 import pytest
 
-from clients.http.dm_api_account.apis.account_api import AccountApi
 from clients.http.dm_api_account.models.user_envelope import User
 from helpers.account_helper import AccountHelper
 from packages.notifier.bot import send_file
@@ -98,16 +96,18 @@ async def auth_account_helper(mailhog_api: MailHogApi, prepare_user: User) -> An
     account_helper = AccountHelper(dm_account_api=account, mailhog=mailhog_api)
     await account_helper.register_new_user(
         login=prepare_user.login,
-        password=prepare_user.password, #type: ignore[attr-defined]
-        email=prepare_user.email, #type: ignore[attr-defined]
+        password=prepare_user.password,  # type: ignore[attr-defined]
+        email=prepare_user.email,  # type: ignore[attr-defined]
     )
-    await account_helper.auth_client(login=prepare_user.login, password=prepare_user.password) #type: ignore[attr-defined]
+    await account_helper.auth_client(login=prepare_user.login, password=prepare_user.password)  # type: ignore[attr-defined]
     return account_helper
 
-class User(NamedTuple): #type: ignore[no-redef]
+
+class User(NamedTuple):  # type: ignore[no-redef]
     login: str
     password: str
     email: str
+
 
 @pytest.fixture
 def prepare_user() -> Any:
@@ -115,5 +115,5 @@ def prepare_user() -> Any:
     login = faker.name().replace(" ", "") + "Roman"
     password = faker.password()
     email = f"{login}@mail.ru"
-    user = User(login=login, password=password, email=email) #type: ignore[call-arg]
+    user = User(login=login, password=password, email=email)  # type: ignore[call-arg]
     return user

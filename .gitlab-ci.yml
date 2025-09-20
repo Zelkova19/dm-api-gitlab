@@ -53,10 +53,10 @@ run_tests:
 
 allure:
     stage: reports
-    tags: 
+    tags:
         - my_docker
     image: frankescobar/allure-docker-service
-    script: 
+    script:
         - allure generate -c ./allure-results -o ./allure-report
     artifacts:
         paths:
@@ -74,7 +74,7 @@ pages:
     script:
         - mkdir public
         - mv ./allure-report/* public
-    artifacts: 
+    artifacts:
         paths:
             - public
     rules:

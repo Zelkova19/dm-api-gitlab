@@ -40,7 +40,7 @@ class AccountHelper:
     @allure.step("Авторизация пользователя")
     async def auth_client(self, login: str, password: str) -> None:
         response = await self.user_login(login=login, password=password, validate_response=False)
-        token = {"x-dm-auth-token": response.headers["x-dm-auth-token"]} # type: ignore[union-attr]
+        token = {"x-dm-auth-token": response.headers["x-dm-auth-token"]}  # type: ignore[union-attr]
 
         self.dm_account_api.account_api.set_headers(token)
         self.dm_account_api.login_api.set_headers(token)
@@ -50,7 +50,7 @@ class AccountHelper:
         user = await self.user_login(login=login, password=password, validate_response=False)
         response = await self.dm_account_api.account_api.post_v1_account_password(
             json={"login": login, "email": email},
-            headers={"x-dm-auth-token": user.headers["x-dm-auth-token"]}, # type: ignore[union-attr]
+            headers={"x-dm-auth-token": user.headers["x-dm-auth-token"]},  # type: ignore[union-attr]
         )
         assert response.status_code == 200, f"Пришло {response.status_code}, {response.json()}"
 
@@ -78,7 +78,7 @@ class AccountHelper:
         )
         assert token is not None, "Ожидали токен, получили None"
         response = await self.dm_account_api.account_api.put_v1_account_token(user_token=token)
-        return response # type: ignore[return-value]
+        return response  # type: ignore[return-value]
 
     @allure.step("Аутентификация пользователя")
     async def user_login(
@@ -112,7 +112,7 @@ class AccountHelper:
         token = await self.get_token(login=login)
         assert token is not None, "Ожидали токен, получили None"
         response = await self.dm_account_api.account_api.put_v1_account_token(user_token=token)
-        return response #type: ignore[return-value]
+        return response  # type: ignore[return-value]
 
     @retrier
     async def get_token(self, login: str, token_type: str = "activation") -> Optional[str]:

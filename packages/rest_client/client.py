@@ -14,7 +14,7 @@ from packages.rest_client.utillities import allure_attach
 
 
 class RestClient:
-    def __init__(self, configuration: Configuration)-> None:
+    def __init__(self, configuration: Configuration) -> None:
         self.host = configuration.host
         self.set_headers(configuration.headers)
         self.disable_log = configuration.disable_log
@@ -81,7 +81,7 @@ class RestClient:
         return rest_response
 
     @staticmethod
-    def _get_json(rest_response: httpx.Response) ->Dict[str, Any]:
+    def _get_json(rest_response: httpx.Response) -> Dict[str, Any]:
         try:
             return rest_response.json()
         except JSONDecodeError:

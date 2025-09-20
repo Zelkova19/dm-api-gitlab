@@ -16,7 +16,7 @@ class LoginApi(RestClient):
         self,
         login_credentials: LoginCredentials,
         validate_response: bool = True,
-    ) ->  Union[UserEnvelop, httpx.Response]:
+    ) -> Union[UserEnvelop, httpx.Response]:
         """
         Authenticate via credentials
         :param:

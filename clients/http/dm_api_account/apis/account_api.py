@@ -26,7 +26,9 @@ class AccountApi(RestClient):
         return response
 
     @allure.step("Запрос пользователя")
-    async def get_v1_account(self, validate_response: bool = True, **kwargs: Any) -> Union[httpx.Response, UserDetailsEnvelope]:
+    async def get_v1_account(
+        self, validate_response: bool = True, **kwargs: Any
+    ) -> Union[httpx.Response, UserDetailsEnvelope]:
         """
         Get current user
         :return:
