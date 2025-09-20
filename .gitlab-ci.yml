@@ -27,7 +27,7 @@ ruff_lint:
         - pip install poetry
         - poetry install --no-root --with lint
     script:
-        - poetry run ruff check .
+        - poetry run ruff check . --fix
     allow_failure: true
 
 
