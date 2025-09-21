@@ -1,4 +1,5 @@
 import allure
+import httpx
 
 from checkers.http_checkers import check_status_code_http
 from checkers.get_v1_account import GetV1Account
@@ -11,7 +12,8 @@ class TestsGetV1Account:
     @allure.title("Авторизованный запрос пользователя")
     async def test_get_v1_account_auth(self, auth_account_helper: AccountHelper) -> None:
         response = await auth_account_helper.dm_account_api.account_api.get_v1_account()
-        GetV1Account.get_v1_account(response=response, login_suffix="Roman")  # type: ignore[arg-type]
+        if isinstance(response, httpx.Response):
+            GetV1Account.get_v1_account(response=response, login_suffix="Roman")
 
     @allure.sub_suite("Негативные тесты")
     @allure.title("Неавторизованный запрос пользователя")

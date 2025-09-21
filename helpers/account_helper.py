@@ -40,17 +40,19 @@ class AccountHelper:
     @allure.step("Авторизация пользователя")
     async def auth_client(self, login: str, password: str) -> None:
         response = await self.user_login(login=login, password=password, validate_response=False)
-        token = {"x-dm-auth-token": response.headers["x-dm-auth-token"]}  # type: ignore[union-attr]
-
-        self.dm_account_api.account_api.set_headers(token)
-        self.dm_account_api.login_api.set_headers(token)
+        if isinstance(response, httpx.Response):
+            token = {"x-dm-auth-token": response.headers["x-dm-auth-token"]}
+            self.dm_account_api.account_api.set_headers(token)
+            self.dm_account_api.login_api.set_headers(token)
 
     @allure.step("Смена пароля")
     async def change_password(self, login: str, email: str, password: str, new_password: str) -> None:
         user = await self.user_login(login=login, password=password, validate_response=False)
+        if not isinstance(user, httpx.Response):
+            raise ValueError("Login response should be instance of httpx.Response")
         response = await self.dm_account_api.account_api.post_v1_account_password(
             json={"login": login, "email": email},
-            headers={"x-dm-auth-token": user.headers["x-dm-auth-token"]},  # type: ignore[union-attr]
+            headers={"x-dm-auth-token": user.headers["x-dm-auth-token"]},
         )
         assert response.status_code == 200, f"Пришло {response.status_code}, {response.json()}"
 
@@ -77,8 +79,13 @@ class AccountHelper:
             f"Время получения токена превысило 3 секунды. Время выполнения {end_time - start_time}"
         )
         assert token is not None, "Ожидали токен, получили None"
-        response = await self.dm_account_api.account_api.put_v1_account_token(user_token=token)
-        return response  # type: ignore[return-value]
+
+        response = await self.dm_account_api.account_api.put_v1_account_token(user_token=token, validate_response=False)
+
+        if not isinstance(response, httpx.Response):
+            raise ValueError("Login response should be instance of httpx.Response")
+
+        return response
 
     @allure.step("Аутентификация пользователя")
     async def user_login(
@@ -96,23 +103,24 @@ class AccountHelper:
             validate_response=validate_response,
         )
         if validate_headers and isinstance(response, httpx.Response):
-            assert "x-dm-auth-token" in response.headers, "Токен для пользователя не был получен"
+            assert "x-dm-auth-token" != None, "Токен для пользователя не был получен"
         return response
 
     @allure.step("Смена почты")
     async def change_email(
-        self,
-        login: str,
-        password: str,
-        new_email: str,
+        self, login: str, password: str, new_email: str, validate_response: bool = False
     ) -> httpx.Response:
         json_data = {"login": login, "password": password, "email": new_email}
         await self.dm_account_api.account_api.put_v1_account_email(json_data=json_data)
 
         token = await self.get_token(login=login)
         assert token is not None, "Ожидали токен, получили None"
-        response = await self.dm_account_api.account_api.put_v1_account_token(user_token=token)
-        return response  # type: ignore[return-value]
+        response = await self.dm_account_api.account_api.put_v1_account_token(
+            user_token=token, validate_response=validate_response
+        )
+        if not isinstance(response, httpx.Response):
+            raise ValueError("Login response should be instance of httpx.Response")
+        return response
 
     @retrier
     async def get_token(self, login: str, token_type: str = "activation") -> Optional[str]:

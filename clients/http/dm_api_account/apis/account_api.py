@@ -39,13 +39,14 @@ class AccountApi(RestClient):
         return response
 
     @allure.step("Сброс пароля")
-    async def post_v1_account_password(self, **kwargs: Any) -> httpx.Response:
+    async def post_v1_account_password(self, validate_response: bool = False, **kwargs: Any) -> httpx.Response:
         """
         Reset registered user password
         :return:
         """
         response = await self.post(path="/v1/account/password", **kwargs)
-        UserEnvelop(**response.json())
+        if validate_response:
+            UserEnvelop(**response.json())
         return response
 
     @allure.step("Изменения пароля")

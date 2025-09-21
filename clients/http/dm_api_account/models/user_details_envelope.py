@@ -54,8 +54,8 @@ class ColorSchema(Enum):
 
 class PagingSettings(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    posts_per_page: Optional[int] = Field(None, alias="postsPerPage")
-    comments_per_page: Optional[int] = Field(None, alias="commentsPerPage")
-    topics_per_page: Optional[int] = Field(None, alias="topicsPerPage")
-    messages_per_page: Optional[int] = Field(None, alias="messagesPerPage")
-    entities_per_page: Optional[int] = Field(None, alias="entitiesPerPage")
+    posts_per_page: Optional[int | None] = Field(None, alias="postsPerPage")
+    comments_per_page: Optional[int | None] = Field(None, alias="commentsPerPage")
+    topics_per_page: Optional[int | None] = Field(None, alias="topicsPerPage")
+    messages_per_page: Optional[int | None] = Field(None, alias="messagesPerPage")
+    entities_per_page: Optional[int | None] = Field(None, alias="entitiesPerPage")

@@ -1,4 +1,4 @@
-from typing import Any, Union
+from typing import Any
 
 import allure
 import httpx
@@ -16,7 +16,7 @@ class LoginApi(RestClient):
         self,
         login_credentials: LoginCredentials,
         validate_response: bool = True,
-    ) -> Union[UserEnvelop, httpx.Response]:
+    ) -> UserEnvelop | httpx.Response:
         """
         Authenticate via credentials
         :param:

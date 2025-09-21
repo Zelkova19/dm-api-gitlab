@@ -4,7 +4,7 @@ import pytest
 from faker import Faker
 from checkers.http_checkers import check_status_code_http
 from checkers.post_v1_account import PostV1Account
-from tests.conftest import User
+from tests.conftest import UserData
 from helpers.account_helper import AccountHelper
 
 faker = Faker()
@@ -14,10 +14,10 @@ faker = Faker()
 class TestsPostV1Account:
     @allure.sub_suite("Позитивные тесты")
     @allure.title("Проверка регистрации новго пользователя")
-    async def test_post_v1_account(self, account_helper: AccountHelper, prepare_user: User) -> None:
+    async def test_post_v1_account(self, account_helper: AccountHelper, prepare_user: UserData) -> None:
         login = prepare_user.login
-        password = prepare_user.password  # type: ignore[attr-defined]
-        email = prepare_user.email  # type: ignore[attr-defined]
+        password = prepare_user.password
+        email = prepare_user.email
         await account_helper.register_new_user(login=login, password=password, email=email)
         response = await account_helper.user_login(login=login, password=password, validate_response=True)
         PostV1Account.check_response_values(response)
@@ -55,7 +55,7 @@ class TestsPostV1Account:
     async def test_post_v1_account_validation_filed(
         self,
         account_helper: AccountHelper,
-        prepare_user: User,
+        prepare_user: UserData,
         login: str,
         email: str,
         password: str,
