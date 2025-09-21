@@ -1,5 +1,6 @@
 import os
 import platform
+import time
 from pathlib import Path
 from typing import NamedTuple, Generator, Any
 
@@ -111,7 +112,8 @@ async def auth_account_helper(mailhog_api: MailHogApi, prepare_user: UserData) -
 @pytest.fixture
 def prepare_user() -> UserData:
     faker = Faker()
-    login = faker.name().replace(" ", "") + "Roman"
+    timestamp = int(time.time() * 1000)
+    login = faker.name().replace(" ", "") + f"{timestamp}Roman"
     password = faker.password()
     email = f"{login}@mail.ru"
     user = UserData(login=login, password=password, email=email)
