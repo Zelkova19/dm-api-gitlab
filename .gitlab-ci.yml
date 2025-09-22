@@ -110,3 +110,4 @@ send_coverage:
     script:
         - python -m packages.notifier.bot
     allow_failure: true
+
