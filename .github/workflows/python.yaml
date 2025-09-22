@@ -41,6 +41,7 @@ jobs:
       - name: Run Coverage
         if: ${{ always()}}
         run: |
+          pip install pyTelegramBotAPI
           python -m packages.notifier.bot
 
       - name: Archive allure results
