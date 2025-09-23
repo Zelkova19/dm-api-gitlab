@@ -925,6 +925,29 @@ socks = ["PySocks (>=1.5.6,!=1.5.7)"]
 use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 
 [[package]]
+name = "restclient"
+version = "0.1.0"
+description = "rest client for testing with log"
+optional = false
+python-versions = ">=3.10,<4.0"
+groups = ["main"]
+files = []
+develop = false
+
+[package.dependencies]
+allure-pytest = ">=2.15.0,<3.0.0"
+curlify2 = ">=2.0.0,<3.0.0"
+httpx = ">=0.28.1,<0.29.0"
+structlog = ">=25.4.0,<26.0.0"
+swagger-coverage = {url = "https://github.com/Zelkova19/swagger-coverage-py/archive/refs/heads/master.zip"}
+
+[package.source]
+type = "git"
+url = "https://github.com/Zelkova19/restclient.git"
+reference = "main"
+resolved_reference = "fbc7342e60241ed098c9217a10a5c0eb7330fcbf"
+
+[[package]]
 name = "rootpath"
 version = "0.1.0"
 description = "Python project/package root path detection."
@@ -1256,4 +1279,4 @@ watchmedo = ["PyYAML (>=3.10)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<4.0"
-content-hash = "f8457f48ff91ba855059845ddd673161a9822840ce859f2d7bc32b733917133c"
+content-hash = "6777ca1007275ee36c694dbf466bbe9727a6532cd6c6c8e38c9007ba76817a46"
