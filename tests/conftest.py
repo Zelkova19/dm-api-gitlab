@@ -48,9 +48,9 @@ def setup_swagger_coverage() -> Generator:
     reporter = CoverageReporter(api_name="dm-api-account", host="http://5.63.153.31:5051")
     reporter.setup("/swagger/Account/swagger.json")
     yield
-    # if platform.system() != "Linux":
-    reporter.generate_report()
-    send_file()
+    if platform.system() != "Linux":
+        reporter.generate_report()
+        send_file()
 
 
 @pytest.fixture(scope="session", autouse=True)
