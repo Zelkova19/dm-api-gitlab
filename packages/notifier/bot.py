@@ -14,7 +14,7 @@ def send_file() -> None:
     print("Current working directory:", os.getcwd())
     # file_path = Path(__file__).parent.joinpath("../..").joinpath("swagger-coverage-report.html")
     project_root = Path(__file__).parent.parent.parent
-    file_path = project_root / "swagger-coverage-report.html"
+    file_path = project_root.parent / "swagger-coverage-report.html"
     print(f"Attempting to open file at: {file_path}")
 
     with open(file_path, "rb") as document:
