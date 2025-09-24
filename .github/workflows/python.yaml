@@ -47,7 +47,7 @@ jobs:
 
           pip install --upgrade pip
           pip install poetry
-          poetry install --no-root --with lint, test
+          poetry install --no-root --with lint
 
       - name: Run MyPy linter
         if: ${{ always() }}
