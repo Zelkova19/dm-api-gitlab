@@ -43,7 +43,23 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
-          python -m packages.notifier.bot
+          python -m bot
+
+          pip install --upgrade pip
+          pip install poetry
+          poetry install --no-root --with lint
+
+      - name: Run MyPy linter
+        if: ${{ always() }}
+        run: poetry run mypy .
+
+      - name: Run Ruff linter
+        if: ${{ always() }}
+        run: poetry run ruff check . --fix
+
+      - name: Run Tests with Pytest
+        if: ${{ always() }}
+        run: poetry run pytest --alluredir=./allure-results tests
 
           pip install --upgrade pip
           pip install poetry

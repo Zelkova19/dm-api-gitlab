@@ -12,14 +12,14 @@ from vyper import v
 import pytest
 
 from helpers.account_helper import AccountHelper
-from packages.notifier.bot import send_file
+from bot import send_file
 
 import structlog
 
-from packages.rest_client.configuration import (
+from restclient.configuration import (
     Configuration as MailhogConfiguration,
 )
-from packages.rest_client.configuration import (
+from restclient.configuration import (
     Configuration as DmApiConfiguration,
 )
 from services.dm_api_account import DMApiAccount
