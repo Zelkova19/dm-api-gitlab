@@ -79,7 +79,7 @@ class AccountApi(RestClient):
     @allure.step("Смена почты")
     async def put_v1_account_email(
         self,
-        json_data: Any,
+        json_data: dict,
         validate_response: bool = True,
     ) -> Union[httpx.Response, UserEnvelop]:
         """

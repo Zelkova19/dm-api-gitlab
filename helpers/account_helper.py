@@ -44,17 +44,18 @@ class AccountHelper:
             token = {"x-dm-auth-token": response.headers["x-dm-auth-token"]}
             self.dm_account_api.account_api.set_headers(token)
             self.dm_account_api.login_api.set_headers(token)
+        else:
+            raise ValueError("Response should be instance of httpx.Response")
 
     @allure.step("Смена пароля")
     async def change_password(self, login: str, email: str, password: str, new_password: str) -> None:
         user = await self.user_login(login=login, password=password, validate_response=False)
         if not isinstance(user, httpx.Response):
             raise ValueError("Login response should be instance of httpx.Response")
-        response = await self.dm_account_api.account_api.post_v1_account_password(
+        await self.dm_account_api.account_api.post_v1_account_password(
             json={"login": login, "email": email},
             headers={"x-dm-auth-token": user.headers["x-dm-auth-token"]},
         )
-        assert response.status_code == 200, f"Пришло {response.status_code}, {response.json()}"
 
         token = await self.get_token(login=login, token_type="reset")
         await self.dm_account_api.account_api.put_v1_account_password(
@@ -65,7 +66,6 @@ class AccountHelper:
                 "token": token,
             }
         )
-        assert response.status_code == 200, f"Пришло {response.status_code}, {response.json()}"
 
     @allure.step("Регистрация нового пользователя")
     async def register_new_user(self, login: str, password: str, email: str) -> httpx.Response:
@@ -109,7 +109,7 @@ class AccountHelper:
     @allure.step("Смена почты")
     async def change_email(
         self, login: str, password: str, new_email: str, validate_response: bool = False
-    ) -> httpx.Response:
+    ) -> httpx.Response | UserEnvelop:
         json_data = {"login": login, "password": password, "email": new_email}
         await self.dm_account_api.account_api.put_v1_account_email(json_data=json_data)
 

@@ -76,27 +76,27 @@ def pytest_addoption(parser: Any) -> Any:
 
 
 @pytest.fixture
-def mailhog_api() -> Any:
+def mailhog_api() -> MailHogApi:
     mailhog_configuration = MailhogConfiguration(host=v.get("service.mailhog"))
     mailhog_client = MailHogApi(configuration=mailhog_configuration)
     return mailhog_client
 
 
 @pytest.fixture
-def account_api() -> Any:
+def account_api() -> DMApiAccount:
     dm_api_configuration = DmApiConfiguration(host=v.get("service.dm_api_account"), disable_log=False)
     account = DMApiAccount(configuration=dm_api_configuration)
     return account
 
 
 @pytest.fixture
-def account_helper(mailhog_api: MailHogApi, account_api: DMApiAccount) -> Any:
+def account_helper(mailhog_api: MailHogApi, account_api: DMApiAccount) -> AccountHelper:
     account_helper = AccountHelper(dm_account_api=account_api, mailhog=mailhog_api)
     return account_helper
 
 
 @pytest.fixture
-async def auth_account_helper(mailhog_api: MailHogApi, prepare_user: UserData) -> Any:
+async def auth_account_helper(mailhog_api: MailHogApi, prepare_user: UserData) -> AccountHelper:
     dm_api_configuration = DmApiConfiguration(host=v.get("service.dm_api_account"), disable_log=False)
     account = DMApiAccount(configuration=dm_api_configuration)
     account_helper = AccountHelper(dm_account_api=account, mailhog=mailhog_api)
