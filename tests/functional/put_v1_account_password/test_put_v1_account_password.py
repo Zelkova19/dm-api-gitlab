@@ -1,10 +1,13 @@
 import allure
 
+from tests.conftest import UserData
+from helpers.account_helper import AccountHelper
+
 
 @allure.suite("Проверка метода POST V1/account/password")
 class TestsPostV1AccountPassword:
     @allure.title("Проверка смены пароля")
-    async def test_post_v1_account_password(self, account_helper, prepare_user):
+    async def test_post_v1_account_password(self, account_helper: AccountHelper, prepare_user: UserData) -> None:
         login = prepare_user.login
         password = prepare_user.password
         email = prepare_user.email

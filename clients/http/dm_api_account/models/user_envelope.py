@@ -23,14 +23,14 @@ class Rating(BaseModel):
 class User(BaseModel):
     login: str
     roles: List[UserRole]
-    medium_picture_url: str = Field(None, alias="mediumPictureUrl")
-    small_picture_url: str = Field(None, alias="smallPictureUrl")
-    status: str = Field(None, alias="status")
+    medium_picture_url: Optional[str] = Field(None, alias="mediumPictureUrl")
+    small_picture_url: Optional[str] = Field(None, alias="smallPictureUrl")
+    status: Optional[str] = Field(None, alias="status")
     rating: Rating
-    online: datetime = Field(None, alias="online")
-    name: str = Field(None, alias="name")
-    location: str = Field(None, alias="location")
-    registration: datetime = Field(None, alias="registration")
+    online: Optional[datetime] = Field(None, alias="online")
+    name: Optional[str] = Field(None, alias="name")
+    location: Optional[str] = Field(None, alias="location")
+    registration: Optional[datetime] = Field(None, alias="registration")
 
 
 class UserEnvelop(BaseModel):

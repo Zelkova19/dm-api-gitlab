@@ -1,7 +1,10 @@
 import os
 import platform
-from collections import namedtuple
+import time
 from pathlib import Path
+from typing import NamedTuple, Generator, Any
+
+from faker import Faker
 
 from swagger_coverage_py.reporter import CoverageReporter
 from vyper import v
@@ -10,7 +13,6 @@ import pytest
 
 from helpers.account_helper import AccountHelper
 from packages.notifier.bot import send_file
-from tests.functional import *
 
 import structlog
 
@@ -35,8 +37,14 @@ options = (
 )
 
 
+class UserData(NamedTuple):
+    login: str
+    password: str
+    email: str
+
+
 @pytest.fixture(scope="session", autouse=True)
-def setup_swagger_coverage():
+def setup_swagger_coverage() -> Generator:
     reporter = CoverageReporter(api_name="dm-api-account", host="http://5.63.153.31:5051")
     reporter.setup("/swagger/Account/swagger.json")
     yield
@@ -46,7 +54,7 @@ def setup_swagger_coverage():
 
 
 @pytest.fixture(scope="session", autouse=True)
-def set_config(request):
+def set_config(request: Any) -> None:
     config = Path(__file__).joinpath("../../").joinpath("config")
     config_name = request.config.getoption("--env")
     v.set_config_name(config_name)
@@ -57,10 +65,10 @@ def set_config(request):
     os.environ["TELEGRAM_BOT_CHAT_ID"] = v.get("telegram.chat_id")
     os.environ["TELEGRAM_BOT_ACCESS_TOKEN"] = v.get("telegram.token")
     request.config.stash["telegram-notifier-addfields"]["enviroment"] = config_name
-    request.config.stash["telegram-notifier-addfields"]["report"] = "https://dm-api-tests-52e7fb.gitlab.io"
+    request.config.stash["telegram-notifier-addfields"]["report"] = "https://zelkova19.github.io/dm-api-gitlab/"
 
 
-def pytest_addoption(parser):
+def pytest_addoption(parser: Any) -> Any:
     parser.addoption("--env", action="store", default="stg", help="run stg")
 
     for option in options:
@@ -68,27 +76,27 @@ def pytest_addoption(parser):
 
 
 @pytest.fixture
-def mailhog_api():
+def mailhog_api() -> MailHogApi:
     mailhog_configuration = MailhogConfiguration(host=v.get("service.mailhog"))
     mailhog_client = MailHogApi(configuration=mailhog_configuration)
     return mailhog_client
 
 
 @pytest.fixture
-def account_api():
+def account_api() -> DMApiAccount:
     dm_api_configuration = DmApiConfiguration(host=v.get("service.dm_api_account"), disable_log=False)
     account = DMApiAccount(configuration=dm_api_configuration)
     return account
 
 
 @pytest.fixture
-def account_helper(mailhog_api, account_api):
+def account_helper(mailhog_api: MailHogApi, account_api: DMApiAccount) -> AccountHelper:
     account_helper = AccountHelper(dm_account_api=account_api, mailhog=mailhog_api)
     return account_helper
 
 
 @pytest.fixture
-async def auth_account_helper(mailhog_api, prepare_user):
+async def auth_account_helper(mailhog_api: MailHogApi, prepare_user: UserData) -> AccountHelper:
     dm_api_configuration = DmApiConfiguration(host=v.get("service.dm_api_account"), disable_log=False)
     account = DMApiAccount(configuration=dm_api_configuration)
     account_helper = AccountHelper(dm_account_api=account, mailhog=mailhog_api)
@@ -102,11 +110,11 @@ async def auth_account_helper(mailhog_api, prepare_user):
 
 
 @pytest.fixture
-def prepare_user():
+def prepare_user() -> UserData:
     faker = Faker()
-    login = faker.name().replace(" ", "") + "Roman"
+    timestamp = int(time.time() * 1000)
+    login = faker.name().replace(" ", "") + f"{timestamp}Roman"
     password = faker.password()
     email = f"{login}@mail.ru"
-    User = namedtuple("User", ["login", "password", "email"])
-    user = User(login=login, password=password, email=email)
+    user = UserData(login=login, password=password, email=email)
     return user

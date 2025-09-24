@@ -1,12 +1,13 @@
 import json
+from typing import Callable, Any
 
 import allure
 import curlify2
-from structlog.stdlib import add_logger_name
+import httpx
 
 
-def allure_attach(fn):
-    async def wrapper(*args, **kwargs):
+def allure_attach(fn: Callable) -> Callable:
+    async def wrapper(*args: Any, **kwargs: Any) -> httpx.Response:
         body = kwargs.get("json")
         if body:
             allure.attach(

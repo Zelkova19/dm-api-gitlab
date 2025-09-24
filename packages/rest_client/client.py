@@ -1,5 +1,6 @@
 import asyncio
 import uuid
+from typing import Any, Optional, Dict
 
 import curlify2
 import structlog
@@ -13,31 +14,31 @@ from packages.rest_client.utillities import allure_attach
 
 
 class RestClient:
-    def __init__(self, configuration: Configuration):
+    def __init__(self, configuration: Configuration) -> None:
         self.host = configuration.host
         self.set_headers(configuration.headers)
         self.disable_log = configuration.disable_log
         self.session = httpx.AsyncClient(verify=False)
         self.log = structlog.get_logger(__name__).bind(service="api")
 
-    def set_headers(self, headers):
+    def set_headers(self, headers: Optional[Dict[str, str]]) -> None:
         if headers:
             self.session.headers.update(headers)
 
-    async def get(self, path, **kwargs):
+    async def get(self, path: str, **kwargs: Any) -> httpx.Response:
         return await self._send_request("GET", path=path, **kwargs)
 
-    async def post(self, path, **kwargs):
+    async def post(self, path: str, **kwargs: Any) -> httpx.Response:
         return await self._send_request("POST", path=path, **kwargs)
 
-    async def put(self, path, **kwargs):
+    async def put(self, path: str, **kwargs: Any) -> httpx.Response:
         return await self._send_request("PUT", path=path, **kwargs)
 
-    async def delete(self, path, **kwargs):
+    async def delete(self, path: str, **kwargs: Any) -> httpx.Response:
         return await self._send_request("DELETE", path=path, **kwargs)
 
     @allure_attach
-    async def _send_request(self, method, path, **kwargs):
+    async def _send_request(self, method: str, path: str, **kwargs: Any) -> httpx.Response:
         log = self.log.bind(event_id=str(uuid.uuid4()))
         full_url = self.host + path
 
@@ -80,7 +81,7 @@ class RestClient:
         return rest_response
 
     @staticmethod
-    def _get_json(rest_response):
+    def _get_json(rest_response: httpx.Response) -> Dict[str, Any]:
         try:
             return rest_response.json()
         except JSONDecodeError:

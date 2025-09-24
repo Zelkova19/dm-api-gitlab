@@ -15,19 +15,19 @@ from hamcrest import (
 
 class PostV1Account:
     @classmethod
-    def check_response_values(cls, response):
+    def check_response_values(cls, response):  # type: ignore[no-untyped-def]
         with allure.step("Проверка ответа"):
             today = datetime.now().strftime("%Y-%m-%d")
             assert_that(str(response.resource.registration), starts_with(today))
             assert_that(
                 response,
                 all_of(
-                    has_property("resource", has_property("login", ends_with("Roman"))),
-                    has_property(
+                    has_property("resource", has_property("login", ends_with("Roman"))),  # type: ignore[arg-type]
+                    has_property(  # type: ignore[arg-type]
                         "resource",
-                        has_property("registration", instance_of(datetime)),
+                        has_property("registration", instance_of(datetime)),  # type: ignore[arg-type]
                     ),
-                    has_property(
+                    has_property(  # type: ignore[arg-type]
                         "resource",
                         has_properties(
                             {

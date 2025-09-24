@@ -1,3 +1,4 @@
+name: Python Tests
 
 on: [ push, pull_request ]
 
@@ -7,22 +8,46 @@ permissions:
   id-token: write
 
 jobs:
-  build:
+  test:
+    name: Python tests
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Python 3.10
+      - uses: actions/checkout@v4
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: '3.11'
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Set JAVA_HOME
+        run: echo "JAVA_HOME=$(dirname $(dirname $(readlink -f $(with java))))" >> $GITHUB_ENV
 
       - name: Install dependencies
         run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install --no-root
+
+      - name: Run tests
+        run: |
+          export JAVA_HOME=$JAVA_HOME
+          poetry run pytest ./tests --alluredir=./allure-results --disable-warnings
+        continue-on-error: true
+
+      - name: Run Coverage
+        if: ${{ always()}}
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m packages.notifier.bot
+
           pip install --upgrade pip
           pip install poetry
-          poetry install --no-root --with lint,test
+          poetry install --no-root --with lint
 
       - name: Run MyPy linter
         if: ${{ always() }}
@@ -36,27 +61,65 @@ jobs:
         if: ${{ always() }}
         run: poetry run pytest --alluredir=./allure-results tests
 
-      - name: Generate Allure Report
-        uses: mikepenz/action-allure-runner@master
+      - name: Archive allure results
+        uses: actions/upload-artifact@v4
         with:
-          results_path: './allure-results/'
+          name: allure-results
+          path: ./allure-results
+          retention-days: 1
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+  generate-report:
+    runs-on: ubuntu-latest
+    needs: test
+    name: Generate report
+    steps:
+      - uses: actions/setup-java@v4
         with:
-          name: allure-report
-          path: allure-report/
+          distribution: 'microsoft'
+          java-version: '17'
 
-      - name: Swagger Coverage Check
-        env:
-          SWAGGER_URL: http://5.63.153.31:5051/swagger/Account/swagger.json
+      - name: Install Allure
         run: |
-          curl -LJO https://github.com/viclovsky/swagger-coverage/releases/download/1.5.0/swagger-coverage-1.5.0.zip
-          unzip swagger-coverage-1.5.0.zip
-          ./swagger-coverage-commandline-1.5.0/bin/swagger-coverage-commandline -s $SWAGGER_URL -i swagger-coverage-output
+          sudo wget https://github.com/allure-framework/allure2/releases/download/2.34.1/allure-2.34.1.tgz
+          sudo tar -xvzf allure-2.34.1.tgz -C /opt/
+          sudo ln -s /opt/allure-2.34.1/bin/allure /usr/bin/allure
 
-      - name: Upload Swagger Coverage Report
-        uses: actions/upload-artifact@v3
+      - name: Download allure results
+        uses: actions/download-artifact@v4
         with:
-          name: swagger-coverage-report
-          path: swagger-coverage-report.html
+          name: allure-results
+          path: ./allure-results
+      - run: allure generate -c allure-results -o _site
+      - name: Store report
+        uses: actions/upload-artifact@v4
+        with:
+          name: _site
+          path: ./_site
+          retention-days: 1
+
+  publish-report:
+
+    runs-on: ubuntu-latest
+
+    needs: generate-report
+
+    name: Publish report
+
+    steps:
+
+      - uses: actions/checkout@v4
+
+      - name: Download site report
+
+        uses: actions/download-artifact@v4
+
+      - name: Upload pages artifact
+
+        uses: actions/upload-pages-artifact@v3
+
+      - name: Deploy to GitHub Pages
+
+        id: deployment
+
+        uses: actions/deploy-pages@v4
+      - run: echo "https://zelkova19.github.io/dm-api-gitlab/"

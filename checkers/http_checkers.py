@@ -1,16 +1,16 @@
 from contextlib import contextmanager
+from typing import Generator
 
 import allure
 import requests
 import httpx
-# from requests.exceptions import HTTPError
 
 
 @contextmanager
 def check_status_code_http(
     expected_status_code: requests.codes = requests.codes.OK,
     expected_message: str = "",
-):
+) -> Generator:
     with allure.step("Проверка ответа"):
         try:
             yield
