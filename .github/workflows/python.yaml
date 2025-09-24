@@ -43,7 +43,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
-          python -m /package/notifier/bot
+          python -m /packages/notifier/bot
 
           pip install --upgrade pip
           pip install poetry
