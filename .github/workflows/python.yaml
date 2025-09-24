@@ -126,9 +126,3 @@ jobs:
 
         uses: actions/deploy-pages@v4
       - run: echo "https://zelkova19.github.io/dm-api-gitlab/"
-        name: swagger-coverage-report
-        path: swagger-coverage-report.html
-
-          name: swagger-coverage-report
-          path: swagger-coverage-report.html
-
