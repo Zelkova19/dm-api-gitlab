@@ -45,6 +45,22 @@ jobs:
           pip install -r requirements.txt
           python -m bot
 
+          pip install --upgrade pip
+          pip install poetry
+          poetry install --no-root --with lint
+
+      - name: Run MyPy linter
+        if: ${{ always() }}
+        run: poetry run mypy .
+
+      - name: Run Ruff linter
+        if: ${{ always() }}
+        run: poetry run ruff check . --fix
+
+      - name: Run Tests with Pytest
+        if: ${{ always() }}
+        run: poetry run pytest --alluredir=./allure-results tests
+
       - name: Archive allure results
         uses: actions/upload-artifact@v4
         with:
