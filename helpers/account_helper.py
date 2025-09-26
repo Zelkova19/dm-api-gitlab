@@ -99,17 +99,17 @@ class AccountHelper:
     ) -> httpx.Response | UserEnvelope:
         login_credentials = LoginCredentials(login=login, password=password, rememberMe=remember_me)
         if validate_response:
-            response = await self.dm_account_api.login_api.post_v1_account_login_with_http_info(
+            response: UserEnvelope = await self.dm_account_api.login_api.post_v1_account_login(
                 login_credentials=login_credentials
             )
             return response
-        response = await self.dm_account_api.login_api.post_v1_account_login_with_http_info(
+        http_response = await self.dm_account_api.login_api.post_v1_account_login_with_http_info(
             login_credentials=login_credentials
         )
-        if validate_headers and isinstance(response, httpx.Response):
-            assert response.headers["x-dm-auth-token"], "Токен для пользователя не был получен"
+        if validate_headers and isinstance(http_response, httpx.Response):
+            assert http_response.headers["x-dm-auth-token"], "Токен для пользователя не был получен"
 
-        return response
+        return http_response
 
     @allure.step("Смена почты")
     async def change_email(
