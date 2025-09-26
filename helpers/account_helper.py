@@ -1,15 +1,18 @@
 import time
 from json import JSONDecodeError, loads
-from typing import Callable, Any, Union, Optional
+from typing import Callable, Any, Optional
 
 import allure
 import httpx
 
-from clients.http.dm_api_account.models.login_credentials import (
+from clients.http.dm_api_account.models.api_models import (
     LoginCredentials,
+    Registration,
+    UserEnvelope,
+    ChangeEmail,
+    ResetPassword,
+    ChangePassword,
 )
-from clients.http.dm_api_account.models.registration import Registration
-from clients.http.dm_api_account.models.user_envelope import UserEnvelop
 from services.dm_api_account import DMApiAccount
 from services.api_mailhog import MailHogApi
 
@@ -40,35 +43,37 @@ class AccountHelper:
     @allure.step("Авторизация пользователя")
     async def auth_client(self, login: str, password: str) -> None:
         response = await self.user_login(login=login, password=password, validate_response=False)
+
         if isinstance(response, httpx.Response):
             token = {"x-dm-auth-token": response.headers["x-dm-auth-token"]}
-            self.dm_account_api.account_api.set_headers(token)
-            self.dm_account_api.login_api.set_headers(token)
+            self.dm_account_api.account_api.api_client.headers.update(token)
+            self.dm_account_api.login_api.api_client.headers.update(token)
         else:
             raise ValueError("Response should be instance of httpx.Response")
 
     @allure.step("Смена пароля")
     async def change_password(self, login: str, email: str, password: str, new_password: str) -> None:
         user = await self.user_login(login=login, password=password, validate_response=False)
-        if not isinstance(user, httpx.Response):
-            raise ValueError("Login response should be instance of httpx.Response")
+        if isinstance(user, httpx.Response):
+            token = user.headers["x-dm-auth-token"]
+        reset_password = {"login": login, "email": email}
         await self.dm_account_api.account_api.post_v1_account_password(
-            json={"login": login, "email": email},
-            headers={"x-dm-auth-token": user.headers["x-dm-auth-token"]},
+            reset_password=ResetPassword(**reset_password),
+            headers={"x-dm-auth-token": token},
         )
 
         token = await self.get_token(login=login, token_type="reset")
-        await self.dm_account_api.account_api.put_v1_account_password(
-            json={
-                "login": login,
-                "oldPassword": password,
-                "newPassword": new_password,
-                "token": token,
-            }
-        )
+        change_password = {
+            "login": login,
+            "oldPassword": password,
+            "newPassword": new_password,
+            "token": token,
+        }
+
+        await self.dm_account_api.account_api.put_v1_account_password(change_password=ChangePassword(**change_password))
 
     @allure.step("Регистрация нового пользователя")
-    async def register_new_user(self, login: str, password: str, email: str) -> httpx.Response:
+    async def register_new_user(self, login: str, password: str, email: str) -> httpx.Response | UserEnvelope:
         registration = Registration(login=login, password=password, email=email)
 
         await self.dm_account_api.account_api.post_v1_account(registration=registration)
@@ -80,11 +85,7 @@ class AccountHelper:
         )
         assert token is not None, "Ожидали токен, получили None"
 
-        response = await self.dm_account_api.account_api.put_v1_account_token(user_token=token, validate_response=False)
-
-        if not isinstance(response, httpx.Response):
-            raise ValueError("Login response should be instance of httpx.Response")
-
+        response = await self.dm_account_api.account_api.put_v1_account_token(token=token)
         return response
 
     @allure.step("Аутентификация пользователя")
@@ -95,31 +96,36 @@ class AccountHelper:
         remember_me: bool = True,
         validate_response: bool = False,
         validate_headers: bool = False,
-    ) -> Union[httpx.Response, UserEnvelop]:
-        login_credentials = LoginCredentials(login=login, password=password, remember_me=remember_me)
-
-        response = await self.dm_account_api.login_api.post_v1_account_login(
-            login_credentials=login_credentials,
-            validate_response=validate_response,
+    ) -> httpx.Response | UserEnvelope:
+        login_credentials = LoginCredentials(login=login, password=password, rememberMe=remember_me)
+        if validate_response:
+            response = await self.dm_account_api.login_api.post_v1_account_login_with_http_info(
+                login_credentials=login_credentials
+            )
+            return response
+        response = await self.dm_account_api.login_api.post_v1_account_login_with_http_info(
+            login_credentials=login_credentials
         )
         if validate_headers and isinstance(response, httpx.Response):
-            assert "x-dm-auth-token" != None, "Токен для пользователя не был получен"
+            assert response.headers["x-dm-auth-token"], "Токен для пользователя не был получен"
+
         return response
 
     @allure.step("Смена почты")
     async def change_email(
-        self, login: str, password: str, new_email: str, validate_response: bool = False
-    ) -> httpx.Response | UserEnvelop:
+        self,
+        login: str,
+        password: str,
+        new_email: str,
+    ) -> httpx.Response | UserEnvelope:
         json_data = {"login": login, "password": password, "email": new_email}
-        await self.dm_account_api.account_api.put_v1_account_email(json_data=json_data)
+        await self.dm_account_api.account_api.put_v1_account_email(change_email=ChangeEmail(**json_data))
 
         token = await self.get_token(login=login)
         assert token is not None, "Ожидали токен, получили None"
         response = await self.dm_account_api.account_api.put_v1_account_token(
-            user_token=token, validate_response=validate_response
+            token=token,
         )
-        if not isinstance(response, httpx.Response):
-            raise ValueError("Login response should be instance of httpx.Response")
         return response
 
     @retrier

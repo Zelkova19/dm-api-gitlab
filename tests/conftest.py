@@ -1,25 +1,22 @@
 import os
-import platform
 import time
 from pathlib import Path
-from typing import NamedTuple, Generator, Any
+from typing import NamedTuple, Any
 
 from faker import Faker
 
-from swagger_coverage_py.reporter import CoverageReporter
 from vyper import v
 
 import pytest
 
 from helpers.account_helper import AccountHelper
-from bot import send_file
 
 import structlog
 
-from restclient.configuration import (
+from restcodegen.restclient.configuration import (
     Configuration as MailhogConfiguration,
 )
-from restclient.configuration import (
+from restcodegen.restclient.configuration import (
     Configuration as DmApiConfiguration,
 )
 from services.dm_api_account import DMApiAccount
@@ -43,14 +40,14 @@ class UserData(NamedTuple):
     email: str
 
 
-@pytest.fixture(scope="session", autouse=True)
-def setup_swagger_coverage() -> Generator:
-    reporter = CoverageReporter(api_name="dm-api-account", host="http://5.63.153.31:5051")
-    reporter.setup("/swagger/Account/swagger.json")
-    yield
-    if platform.system() != "Linux":
-        reporter.generate_report()
-        send_file()
+# @pytest.fixture(scope="session", autouse=True)
+# def setup_swagger_coverage() -> Generator:
+#     reporter = CoverageReporter(api_name="dm-api-account", host="http://5.63.153.31:5051")
+#     reporter.setup("/swagger/Account/swagger.json")
+#     yield
+#     if platform.system() != "Linux":
+#         reporter.generate_report()
+#         send_file()
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -77,14 +74,14 @@ def pytest_addoption(parser: Any) -> Any:
 
 @pytest.fixture
 def mailhog_api() -> MailHogApi:
-    mailhog_configuration = MailhogConfiguration(host=v.get("service.mailhog"))
+    mailhog_configuration = MailhogConfiguration(base_url=v.get("service.mailhog"))
     mailhog_client = MailHogApi(configuration=mailhog_configuration)
     return mailhog_client
 
 
 @pytest.fixture
 def account_api() -> DMApiAccount:
-    dm_api_configuration = DmApiConfiguration(host=v.get("service.dm_api_account"), disable_log=False)
+    dm_api_configuration = DmApiConfiguration(base_url=v.get("service.dm_api_account"), disable_log=False)
     account = DMApiAccount(configuration=dm_api_configuration)
     return account
 
@@ -97,7 +94,7 @@ def account_helper(mailhog_api: MailHogApi, account_api: DMApiAccount) -> Accoun
 
 @pytest.fixture
 async def auth_account_helper(mailhog_api: MailHogApi, prepare_user: UserData) -> AccountHelper:
-    dm_api_configuration = DmApiConfiguration(host=v.get("service.dm_api_account"), disable_log=False)
+    dm_api_configuration = DmApiConfiguration(base_url=v.get("service.dm_api_account"), disable_log=False)
     account = DMApiAccount(configuration=dm_api_configuration)
     account_helper = AccountHelper(dm_account_api=account, mailhog=mailhog_api)
     await account_helper.register_new_user(

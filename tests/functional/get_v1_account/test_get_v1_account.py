@@ -11,7 +11,7 @@ class TestsGetV1Account:
     @allure.sub_suite("Позитивные тесты")
     @allure.title("Авторизованный запрос пользователя")
     async def test_get_v1_account_auth(self, auth_account_helper: AccountHelper) -> None:
-        response = await auth_account_helper.dm_account_api.account_api.get_v1_account()
+        response = await auth_account_helper.dm_account_api.account_api.get_v1_account(x_dm_auth_token="")
         if isinstance(response, httpx.Response):
             GetV1Account.get_v1_account(response=response, login_suffix="Roman")
 
@@ -22,4 +22,4 @@ class TestsGetV1Account:
             expected_status_code=401,
             expected_message="User must be authenticated",
         ):
-            await account_helper.dm_account_api.account_api.get_v1_account()
+            await account_helper.dm_account_api.account_api.get_v1_account_with_http_info(x_dm_auth_token="")
