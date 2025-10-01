@@ -30,6 +30,7 @@ dependencies = [
     "types-requests (>=2.32.4.20250913,<3.0.0.0)",
     "restcodegen (>=1.1.1,<2.0.0)",
     "restclient (>=0.11.0,<0.12.0)",
+    "dm-api-account @ file:///home/zelkova/PycharmProjects/dm_api_tests_gitlab/dm_api_account",
 ]
 
 

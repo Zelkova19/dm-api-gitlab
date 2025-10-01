@@ -4,6 +4,8 @@ import pytest
 from faker import Faker
 from checkers.http_checkers import check_status_code_http
 from checkers.post_v1_account import PostV1Account
+from dm_api_account.exceptions import ApiException
+
 from tests.conftest import UserData
 from helpers.account_helper import AccountHelper
 
@@ -65,5 +67,9 @@ class TestsPostV1Account:
     ) -> None:
         allure.dynamic.title(f"Валидация поля {title}")
 
-        with check_status_code_http(status_code, error_message):
+        with check_status_code_http(
+            exception=ApiException,
+            expected_status_code=status_code,
+            expected_message=error_message,
+        ):
             await account_helper.register_new_user(login=login, password=password, email=email)

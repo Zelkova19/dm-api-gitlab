@@ -16,7 +16,7 @@ import structlog
 from restcodegen.restclient.configuration import (
     Configuration as MailhogConfiguration,
 )
-from restcodegen.restclient.configuration import (
+from dm_api_account.configuration import (
     Configuration as DmApiConfiguration,
 )
 from services.dm_api_account import DMApiAccount
@@ -81,7 +81,7 @@ def mailhog_api() -> MailHogApi:
 
 @pytest.fixture
 def account_api() -> DMApiAccount:
-    dm_api_configuration = DmApiConfiguration(base_url=v.get("service.dm_api_account"), disable_log=False)
+    dm_api_configuration = DmApiConfiguration(host=v.get("service.dm_api_account"))
     account = DMApiAccount(configuration=dm_api_configuration)
     return account
 
@@ -94,7 +94,7 @@ def account_helper(mailhog_api: MailHogApi, account_api: DMApiAccount) -> Accoun
 
 @pytest.fixture
 async def auth_account_helper(mailhog_api: MailHogApi, prepare_user: UserData) -> AccountHelper:
-    dm_api_configuration = DmApiConfiguration(base_url=v.get("service.dm_api_account"), disable_log=False)
+    dm_api_configuration = DmApiConfiguration(host=v.get("service.dm_api_account"))
     account = DMApiAccount(configuration=dm_api_configuration)
     account_helper = AccountHelper(dm_account_api=account, mailhog=mailhog_api)
     await account_helper.register_new_user(
