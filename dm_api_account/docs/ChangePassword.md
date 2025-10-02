@@ -6,10 +6,10 @@ API DTO model for password changing
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**login** | **str** | User login | [optional]
-**token** | **str** | Password reset token | [optional]
-**old_password** | **str** | Old password | [optional]
-**new_password** | **str** | New password | [optional]
+**login** | **str** | User login | [optional] 
+**token** | **str** | Password reset token | [optional] 
+**old_password** | **str** | Old password | [optional] 
+**new_password** | **str** | New password | [optional] 
 
 ## Example
 
@@ -29,3 +29,5 @@ change_password_dict = change_password_instance.to_dict()
 change_password_from_dict = ChangePassword.from_dict(change_password_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+

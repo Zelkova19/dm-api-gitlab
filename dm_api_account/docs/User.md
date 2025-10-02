@@ -6,16 +6,16 @@ DTO model for user
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**login** | **str** | Login | [optional]
-**roles** | [**List[UserRole]**](UserRole.md) | Roles | [optional]
-**medium_picture_url** | **str** | Profile picture URL M-size | [optional]
-**small_picture_url** | **str** | Profile picture URL S-size | [optional]
-**status** | **str** | User defined status | [optional]
-**rating** | [**Rating**](Rating.md) |  | [optional]
-**online** | **datetime** | Last seen online moment | [optional]
-**name** | **str** | User real name | [optional]
-**location** | **str** | User real location | [optional]
-**registration** | **datetime** | User registration moment | [optional]
+**login** | **str** | Login | [optional] 
+**roles** | [**List[UserRole]**](UserRole.md) | Roles | [optional] 
+**medium_picture_url** | **str** | Profile picture URL M-size | [optional] 
+**small_picture_url** | **str** | Profile picture URL S-size | [optional] 
+**status** | **str** | User defined status | [optional] 
+**rating** | [**Rating**](Rating.md) |  | [optional] 
+**online** | **datetime** | Last seen online moment | [optional] 
+**name** | **str** | User real name | [optional] 
+**location** | **str** | User real location | [optional] 
+**registration** | **datetime** | User registration moment | [optional] 
 
 ## Example
 
@@ -35,3 +35,5 @@ user_dict = user_instance.to_dict()
 user_from_dict = User.from_dict(user_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+

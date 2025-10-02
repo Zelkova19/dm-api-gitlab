@@ -50,8 +50,8 @@ async with dm_api_account.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **x_dm_auth_token** | **str**| Authenticated requests require X-Dm-Auth-Token header. You can get the data from POST /account/ method, sending login and password in \&quot;token\&quot; response field |
- **x_dm_bb_render_mode** | **str**| Requests with user defined texts that allows usage of BB-codes may be rendered differently by passing the X-Dm-Bb-Render-Mode header of one of following values Html, Bb, Text, SafeHtml | [optional]
+ **x_dm_auth_token** | **str**| Authenticated requests require X-Dm-Auth-Token header. You can get the data from POST /account/ method, sending login and password in \&quot;token\&quot; response field | 
+ **x_dm_bb_render_mode** | **str**| Requests with user defined texts that allows usage of BB-codes may be rendered differently by passing the X-Dm-Bb-Render-Mode header of one of following values Html, Bb, Text, SafeHtml | [optional] 
 
 ### Return type
 
@@ -116,8 +116,8 @@ async with dm_api_account.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **x_dm_auth_token** | **str**| Authenticated requests require X-Dm-Auth-Token header. You can get the data from POST /account/ method, sending login and password in \&quot;token\&quot; response field |
- **x_dm_bb_render_mode** | **str**| Requests with user defined texts that allows usage of BB-codes may be rendered differently by passing the X-Dm-Bb-Render-Mode header of one of following values Html, Bb, Text, SafeHtml | [optional]
+ **x_dm_auth_token** | **str**| Authenticated requests require X-Dm-Auth-Token header. You can get the data from POST /account/ method, sending login and password in \&quot;token\&quot; response field | 
+ **x_dm_bb_render_mode** | **str**| Requests with user defined texts that allows usage of BB-codes may be rendered differently by passing the X-Dm-Bb-Render-Mode header of one of following values Html, Bb, Text, SafeHtml | [optional] 
 
 ### Return type
 
@@ -186,8 +186,8 @@ async with dm_api_account.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **x_dm_bb_render_mode** | **str**| Requests with user defined texts that allows usage of BB-codes may be rendered differently by passing the X-Dm-Bb-Render-Mode header of one of following values Html, Bb, Text, SafeHtml | [optional]
- **login_credentials** | [**LoginCredentials**](LoginCredentials.md)| Login credentials | [optional]
+ **x_dm_bb_render_mode** | **str**| Requests with user defined texts that allows usage of BB-codes may be rendered differently by passing the X-Dm-Bb-Render-Mode header of one of following values Html, Bb, Text, SafeHtml | [optional] 
+ **login_credentials** | [**LoginCredentials**](LoginCredentials.md)| Login credentials | [optional] 
 
 ### Return type
 
@@ -211,3 +211,4 @@ No authorization required
 **403** | User is inactive or banned |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+

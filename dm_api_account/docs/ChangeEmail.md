@@ -6,9 +6,9 @@ API DTO model for changing user email
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**login** | **str** | User login | [optional]
-**password** | **str** | User password | [optional]
-**email** | **str** | New user email | [optional]
+**login** | **str** | User login | [optional] 
+**password** | **str** | User password | [optional] 
+**email** | **str** | New user email | [optional] 
 
 ## Example
 
@@ -28,3 +28,5 @@ change_email_dict = change_email_instance.to_dict()
 change_email_from_dict = ChangeEmail.from_dict(change_email_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+

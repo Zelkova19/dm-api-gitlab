@@ -6,9 +6,9 @@ DTO model for user registration
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**login** | **str** | Login | [optional]
-**email** | **str** | Email | [optional]
-**password** | **str** | Password | [optional]
+**login** | **str** | Login | [optional] 
+**email** | **str** | Email | [optional] 
+**password** | **str** | Password | [optional] 
 
 ## Example
 
@@ -28,3 +28,5 @@ registration_dict = registration_instance.to_dict()
 registration_from_dict = Registration.from_dict(registration_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+

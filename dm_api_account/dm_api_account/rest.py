@@ -10,19 +10,22 @@
 
     Do not edit the class manually.
 """  # noqa: E501
-import asyncio
+
+
 import io
 import json
 import re
 import ssl
-from json import JSONDecodeError
 from typing import Optional, Union
+from json import JSONDecodeError
 
-import aiohttp
-import aiohttp_retry
 import structlog
 import curlify2
+import allure
+import asyncio
 from unittest.mock import MagicMock
+import aiohttp
+import aiohttp_retry
 
 from dm_api_account.exceptions import ApiException, ApiValueError
 
@@ -227,6 +230,8 @@ class RESTClientObject:
         requests = MagicMock(**args, body=json_data)
         curl = curlify2.Curlify(request=requests).to_curl()
         print(curl)
+        allure.attach(curl, name="curl", attachment_type=allure.attachment_type.TEXT)
+        allure.attach(json.dumps(json_dict, indent=4), name="request", attachment_type=allure.attachment_type.JSON)
         try:
             r = await pool_manager.request(**args)
         except RuntimeError as e:
@@ -237,8 +242,11 @@ class RESTClientObject:
             data = await r.read()
             try:
                 json_data = json.loads(data)
+                attachment_type = allure.attachment_type.JSON
             except JSONDecodeError:
                 json_data = str(data)
+                attachment_type = allure.attachment_type.TEXT
+
 
             log.msg(
                 'response',
@@ -248,4 +256,6 @@ class RESTClientObject:
                 json=json_data,
                 status_code=log_response.get('status')
             )
+            content = json.dumps(json_data, indent=4) if attachment_type == allure.attachment_type.JSON else json_data
+            allure.attach(content, name="response", attachment_type=attachment_type)
             return RESTResponse(r)

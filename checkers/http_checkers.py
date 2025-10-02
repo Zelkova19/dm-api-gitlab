@@ -22,4 +22,3 @@ def check_status_code_http(
         except exception as e:
             assert e.status == expected_status_code
             assert json.loads(e.body)["title"] == expected_message
-            # assert e.reason == expected_message

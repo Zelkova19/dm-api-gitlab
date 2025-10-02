@@ -6,8 +6,8 @@ Enveloped DTO model
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**resource** | [**User**](User.md) |  | [optional]
-**metadata** | **object** | Additional metadata | [optional]
+**resource** | [**User**](User.md) |  | [optional] 
+**metadata** | **object** | Additional metadata | [optional] 
 
 ## Example
 
@@ -27,3 +27,5 @@ user_envelope_dict = user_envelope_instance.to_dict()
 user_envelope_from_dict = UserEnvelope.from_dict(user_envelope_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+

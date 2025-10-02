@@ -6,8 +6,8 @@ Bad request error DTO
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**message** | **str** | Client message | [optional]
-**invalid_properties** | **Dict[str, List[str]]** | Key-value pairs of invalid request properties | [optional]
+**message** | **str** | Client message | [optional] 
+**invalid_properties** | **Dict[str, List[str]]** | Key-value pairs of invalid request properties | [optional] 
 
 ## Example
 
@@ -27,3 +27,5 @@ bad_request_error_dict = bad_request_error_instance.to_dict()
 bad_request_error_from_dict = BadRequestError.from_dict(bad_request_error_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+

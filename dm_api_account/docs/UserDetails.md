@@ -6,21 +6,21 @@ DTO model for user details
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**login** | **str** | Login | [optional]
-**roles** | [**List[UserRole]**](UserRole.md) | Roles | [optional]
-**medium_picture_url** | **str** | Profile picture URL M-size | [optional]
-**small_picture_url** | **str** | Profile picture URL S-size | [optional]
-**status** | **str** | User defined status | [optional]
-**rating** | [**Rating**](Rating.md) |  | [optional]
-**online** | **datetime** | Last seen online moment | [optional]
-**name** | **str** | User real name | [optional]
-**location** | **str** | User real location | [optional]
-**registration** | **datetime** | User registration moment | [optional]
-**icq** | **str** | User ICQ number | [optional]
-**skype** | **str** | User Skype login | [optional]
-**original_picture_url** | **str** | URL of profile picture original | [optional]
-**info** | [**InfoBbText**](InfoBbText.md) |  | [optional]
-**settings** | [**UserSettings**](UserSettings.md) |  | [optional]
+**login** | **str** | Login | [optional] 
+**roles** | [**List[UserRole]**](UserRole.md) | Roles | [optional] 
+**medium_picture_url** | **str** | Profile picture URL M-size | [optional] 
+**small_picture_url** | **str** | Profile picture URL S-size | [optional] 
+**status** | **str** | User defined status | [optional] 
+**rating** | [**Rating**](Rating.md) |  | [optional] 
+**online** | **datetime** | Last seen online moment | [optional] 
+**name** | **str** | User real name | [optional] 
+**location** | **str** | User real location | [optional] 
+**registration** | **datetime** | User registration moment | [optional] 
+**icq** | **str** | User ICQ number | [optional] 
+**skype** | **str** | User Skype login | [optional] 
+**original_picture_url** | **str** | URL of profile picture original | [optional] 
+**info** | [**InfoBbText**](InfoBbText.md) |  | [optional] 
+**settings** | [**UserSettings**](UserSettings.md) |  | [optional] 
 
 ## Example
 
@@ -40,3 +40,5 @@ user_details_dict = user_details_instance.to_dict()
 user_details_from_dict = UserDetails.from_dict(user_details_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+

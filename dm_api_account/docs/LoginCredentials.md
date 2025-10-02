@@ -5,9 +5,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**login** | **str** |  | [optional]
-**password** | **str** |  | [optional]
-**remember_me** | **bool** |  | [optional]
+**login** | **str** |  | [optional] 
+**password** | **str** |  | [optional] 
+**remember_me** | **bool** |  | [optional] 
 
 ## Example
 
@@ -27,3 +27,5 @@ login_credentials_dict = login_credentials_instance.to_dict()
 login_credentials_from_dict = LoginCredentials.from_dict(login_credentials_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+

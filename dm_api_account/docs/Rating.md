@@ -6,9 +6,9 @@ DTO model for user rating
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**enabled** | **bool** | Rating participation flag | [optional]
-**quality** | **int** | Quality rating | [optional]
-**quantity** | **int** | Quantity rating | [optional]
+**enabled** | **bool** | Rating participation flag | [optional] 
+**quality** | **int** | Quality rating | [optional] 
+**quantity** | **int** | Quantity rating | [optional] 
 
 ## Example
 
@@ -28,3 +28,5 @@ rating_dict = rating_instance.to_dict()
 rating_from_dict = Rating.from_dict(rating_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+

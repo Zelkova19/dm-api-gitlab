@@ -5,8 +5,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**value** | **str** | Text | [optional]
-**parse_mode** | [**BbParseMode**](BbParseMode.md) |  | [optional]
+**value** | **str** | Text | [optional] 
+**parse_mode** | [**BbParseMode**](BbParseMode.md) |  | [optional] 
 
 ## Example
 
@@ -26,3 +26,5 @@ info_bb_text_dict = info_bb_text_instance.to_dict()
 info_bb_text_from_dict = InfoBbText.from_dict(info_bb_text_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+

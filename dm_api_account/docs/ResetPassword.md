@@ -6,8 +6,8 @@ DTO model for user password reseting
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**login** | **str** | Login | [optional]
-**email** | **str** | Email | [optional]
+**login** | **str** | Login | [optional] 
+**email** | **str** | Email | [optional] 
 
 ## Example
 
@@ -27,3 +27,5 @@ reset_password_dict = reset_password_instance.to_dict()
 reset_password_from_dict = ResetPassword.from_dict(reset_password_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+
