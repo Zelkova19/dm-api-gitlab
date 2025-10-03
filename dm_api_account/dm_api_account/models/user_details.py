@@ -203,7 +203,7 @@ class UserDetails(BaseModel):
                 "icq": obj.get("icq"),
                 "skype": obj.get("skype"),
                 "originalPictureUrl": obj.get("originalPictureUrl"),
-                "info": InfoBbText.from_dict(obj["info"]) if obj.get("info") is not None else None,
+                # "info": InfoBbText.from_dict(obj["info"]) if obj.get("info") is not None else None,
                 "settings": UserSettings.from_dict(obj["settings"]) if obj.get("settings") is not None else None,
             }
         )
