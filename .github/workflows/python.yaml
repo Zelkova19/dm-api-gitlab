@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   test:
-    name: Python tests
+    name: Python test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -32,7 +32,7 @@ jobs:
           pip install poetry
           poetry install --no-root
 
-      - name: Run tests
+      - name: Run test
         run: |
           export JAVA_HOME=$JAVA_HOME
           poetry run pytest ./tests --alluredir=./allure-results --disable-warnings
@@ -59,11 +59,11 @@ jobs:
 
       - name: Run Tests with Pytest
         if: ${{ always() }}
-        run: poetry run pytest --alluredir=./allure-results tests
+        run: poetry run pytest --alluredir=./allure-results test
 
       - name: Run MyPy linter
         if: ${{ always() }}
-        run: poetry run mypy .
+        run: poetry run mypy . --explicit-package-bases
 
       - name: Run Ruff linter
         if: ${{ always() }}
@@ -71,7 +71,7 @@ jobs:
 
       - name: Run Tests with Pytest
         if: ${{ always() }}
-        run: poetry run pytest --alluredir=./allure-results tests
+        run: poetry run pytest --alluredir=./allure-results test
 
       - name: Archive allure results
         uses: actions/upload-artifact@v4
