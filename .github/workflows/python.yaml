@@ -51,18 +51,6 @@ jobs:
 
       - name: Run MyPy linter
         if: ${{ always() }}
-        run: poetry run mypy .
-
-      - name: Run Ruff linter
-        if: ${{ always() }}
-        run: poetry run ruff check . --fix
-
-      - name: Run Tests with Pytest
-        if: ${{ always() }}
-        run: poetry run pytest --alluredir=./allure-results test
-
-      - name: Run MyPy linter
-        if: ${{ always() }}
         run: poetry run mypy . --explicit-package-bases
 
       - name: Run Ruff linter
@@ -71,7 +59,7 @@ jobs:
 
       - name: Run Tests with Pytest
         if: ${{ always() }}
-        run: poetry run pytest --alluredir=./allure-results test
+        run: poetry run pytest ./tests --alluredir=./allure-results --disable-warnings
 
       - name: Archive allure results
         uses: actions/upload-artifact@v4
